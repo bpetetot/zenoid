@@ -1,22 +1,22 @@
-import React, {Component} from 'react';
+import React from 'react';
 import blessed from 'neo-blessed';
 import {createBlessedRenderer} from 'react-blessed';
+
+import Board from './Board.jsx'
 
 const render = createBlessedRenderer(blessed);
 
 const config = {
-	width: 50,
-	height: 25,
+	cols: 80,
+	rows: 24,
 };
 
-class App extends Component {
-  render() {
-    return (
-      <box left="center" top="center" width={78 + 2} height={22 + 2} border={{type: 'line'}} style={{border: {fg: 'cyan'}}}>
-        000000000000000000000000000000000000000000000000000000000000000000000000000000
-      </box>
-    );
-  }
+const App = () => {
+  return (
+    <Board {...config}>
+      
+    </Board>
+  );
 }
 
 const screen = blessed.screen({
@@ -25,8 +25,6 @@ const screen = blessed.screen({
   debug: true,
 });
 
-screen.key(['escape', 'q', 'C-c'], function(ch, key) {
-  return process.exit(0);
-});
+screen.key(['escape', 'q', 'C-c'], () => process.exit(0));
 
 render(<App />, screen);
