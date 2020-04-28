@@ -3,8 +3,7 @@ import React from 'react'
 import Brick from './Brick.jsx';
 import Player from './Player.jsx';
 
-const Board = ({ map, playerX }) => {
-  const { rows, cols, bricks, playerWidth } = map
+const Board = ({ cols, rows, bricks, player }) => {
   return (
     <box
       left="center"
@@ -15,7 +14,7 @@ const Board = ({ map, playerX }) => {
       style={{ border: { fg: 'grey', bg: 'grey' } }}
     >
       {bricks.map((props, i) => <Brick key={i} {...props}/>)}
-      <Player left={playerX} width={playerWidth} />
+      <Player {...player} />
     </box>
   )
 }
