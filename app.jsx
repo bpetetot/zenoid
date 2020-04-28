@@ -3,24 +3,13 @@ import blessed from 'neo-blessed';
 import {createBlessedRenderer} from 'react-blessed';
 
 import Board from './Board.jsx'
-import Brick from './Brick.jsx';
-import Player from './Player.jsx';
+import level1 from './levels/level1.js';
 
 const render = createBlessedRenderer(blessed);
 
-const config = {
-	cols: 80,
-	rows: 24,
-};
-
 const App = () => {
   return (
-    <Board {...config}>
-      <Brick />
-      <Brick left={40}/>
-      <Brick top={10}/>
-      <Player />
-    </Board>
+    <Board map={level1} />
   );
 }
 

@@ -1,6 +1,10 @@
 import React from 'react'
 
-const Board = ({ cols, rows, children }) => {
+import Brick from './Brick.jsx';
+import Player from './Player.jsx';
+
+const Board = ({ map }) => {
+  const { rows, cols, bricks } = map
   return (
     <box
       left="center"
@@ -8,9 +12,10 @@ const Board = ({ cols, rows, children }) => {
       width={cols + 2}
       height={rows + 2}
       border={{ type: 'line' }}
-      style={{ border: { fg: 'cyan' } }}
+      style={{ border: { fg: 'grey', bg: 'grey' } }}
     >
-      {children}
+      {bricks.map((props, i) => <Brick key={i} {...props}/>)}
+      <Player />
     </box>
   )
 }
