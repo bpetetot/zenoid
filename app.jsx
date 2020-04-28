@@ -12,8 +12,8 @@ const config = {
 class App extends Component {
   render() {
     return (
-      <box left="center" top="center" width={80} height={15} border={{type: 'line'}} style={{border: {fg: 'cyan'}}}>
-        0
+      <box left="center" top="center" width={78 + 2} height={22 + 2} border={{type: 'line'}} style={{border: {fg: 'cyan'}}}>
+        000000000000000000000000000000000000000000000000000000000000000000000000000000
       </box>
     );
   }
