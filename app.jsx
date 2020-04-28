@@ -3,6 +3,8 @@ import blessed from 'neo-blessed';
 import {createBlessedRenderer} from 'react-blessed';
 
 import Board from './Board.jsx'
+import Brick from './Brick.jsx';
+import Player from './Player.jsx';
 
 const render = createBlessedRenderer(blessed);
 
@@ -14,7 +16,10 @@ const config = {
 const App = () => {
   return (
     <Board {...config}>
-      
+      <Brick />
+      <Brick left={40}/>
+      <Brick top={10}/>
+      <Player />
     </Board>
   );
 }
