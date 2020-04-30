@@ -1,7 +1,7 @@
 export const LEFT=-1
 export const RIGHT=1
-const TOP=-1
-const BOTTOM=1
+export const TOP=-1
+export const BOTTOM=1
 
 const TOP_BOTTOM_PROP='dy'
 const LEFT_RIGHT_PROP='dx'

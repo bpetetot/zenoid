@@ -1,7 +1,6 @@
 export default {
 	cols: 80,
   rows: 24,
-  playerWidth: 10,
   bricks: [
     { left: 0, top: 3 },
     { left: 10, top: 3 },

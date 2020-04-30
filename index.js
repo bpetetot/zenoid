@@ -5,4 +5,4 @@ require('@babel/register')({
   ]
 });
 
-require('./app.jsx');
+require('./components/App.jsx');

@@ -1,12 +1,12 @@
 import React from 'react'
 
-const Player = ({ x = '50%-4', width = 8, color = 'blue'}) => {
+const Player = ({ x, y, width, height, color = 'blue'}) => {
   return (
     <box
-      bottom={0}
+      top={y}
       left={x}
       width={width}
-      height={1}
+      height={height}
       style={{ bg: color }}
     />
   )
