@@ -49,6 +49,24 @@ export const willBumpPlayer = ({ player, ball }) => {
   return willCollideObject(playerBBox, ballBBox)
 }
 
+export const findBrickCollision = ({ board, ball }) => {
+  const ballBBox = {
+    x: ball.x + ball.dx,
+    y: ball.y + ball.dy,
+    width: ball.width,
+    height: ball.height,
+  }
+
+  return board.bricks.find(brick => {
+    const brickBBox = {
+      ...brick,
+      x: brick.left,
+      y: brick.top,
+    }
+    return willCollideObject(ballBBox, brickBBox)
+  })
+}
+
 const willCollideObject = (box1, box2) => {
   return (
     box1.x < box2.x + box2.width &&

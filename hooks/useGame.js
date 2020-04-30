@@ -24,6 +24,11 @@ export const useGame = (board) => {
       game.update(newGame, actions.RESET_PLAYER_COLOR)
     }
 
+    const brickCollide = ball.findBrickCollision(newGame)
+    if (brickCollide) {
+      brickCollide.color = 'red'
+    }
+
     game.update(newGame, actions.MOVE_BALL)
     game.update(newGame, actions.MOVE_PLAYER)
   
