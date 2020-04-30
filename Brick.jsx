@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 
 const Brick = ({ top = 0, left = 0, width = 6, height = 1 }) => {
   return (
@@ -12,4 +12,4 @@ const Brick = ({ top = 0, left = 0, width = 6, height = 1 }) => {
   )
 }
 
-export default Brick
+export default memo(Brick)

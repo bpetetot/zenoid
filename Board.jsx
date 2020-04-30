@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {memo} from 'react'
 
 import Brick from './Brick.jsx';
 import Player from './Player.jsx';
+import Ball from './Ball.jsx';
 
-const Board = ({ cols, rows, bricks, player }) => {
+const Board = ({ cols, rows, bricks, player, ball }) => {
   return (
     <box
       left="center"
@@ -15,8 +16,9 @@ const Board = ({ cols, rows, bricks, player }) => {
     >
       {bricks.map((props, i) => <Brick key={i} {...props}/>)}
       <Player {...player} />
+      <Ball {...ball} />
     </box>
   )
 }
 
-export default Board
+export default memo(Board)
