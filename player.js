@@ -1,10 +1,13 @@
-import { LEFT_DIRECTION, RIGHT_DIRECTION } from './directions.js'
+import * as direction from './direction'
 
 const PLAYER_VELOCITY = 2
 
-export const movePlayer = state => {
-  const { board, player } = state
-  
+const isMoving = dx => state => state.dx == dx
+
+export const isMovingLeft = isMoving(direction.LEFT)
+export const isMovingRight = isMoving(direction.RIGHT)
+
+export const move = (player, board) => {
   let shouldMove = false
   let currentDx = player.dx * PLAYER_VELOCITY
   while (!shouldMove && Math.abs(currentDx) !== 0) {
@@ -30,9 +33,15 @@ export const movePlayer = state => {
   return player
 }
 
-const playerMoving = dx => state => {
-  return state.dx == dx
+const HIGHLIGHT_COLOR = 'red'
+const DEFAULT_COLOR = 'blue'
+
+const setColor = color => player => {
+  if (player.color !== color) {
+    return {...player, color }
+  }
+  return player
 }
 
-export const playerMovingLeft = playerMoving(LEFT_DIRECTION)
-export const playerMovingRight = playerMoving(RIGHT_DIRECTION)
+export const highlightColor = setColor(HIGHLIGHT_COLOR)
+export const defaultColor = setColor(DEFAULT_COLOR)

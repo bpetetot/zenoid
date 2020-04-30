@@ -1,13 +1,9 @@
 import { useReducer, useMemo } from 'react'
 import useInterval from './useInterval'
-import { movePlayer } from './movePlayer.js'
-import {
-  setDirectionLeft,
-  setDirectionRight,
-  setDirectionTop,
-  setDirectionBottom,
-} from './directions.js'
-import * as ball from './moveBall'
+
+import * as direction from './direction'
+import * as ball from './ball'
+import * as player from './player'
 
 export const MOVE_PLAYER = 'MOVE_PLAYER'
 export const SET_PLAYER_DIRECTION_LEFT = 'SET_PLAYER_DIRECTION_LEFT'
@@ -17,23 +13,25 @@ export const SET_BALL_DIRECTION_BOTTOM = 'SET_BALL_DIRECTION_BOTTOM'
 export const SET_BALL_DIRECTION_TOP = 'SET_BALL_DIRECTION_TOP'
 export const SET_BALL_DIRECTION_LEFT = 'SET_BALL_DIRECTION_LEFT'
 export const SET_BALL_DIRECTION_RIGHT = 'SET_BALL_DIRECTION_RIGHT'
+export const HIGHLIGHT_PLAYER_COLOR = 'HIGHLIGHT_PLAYER_COLOR'
+export const RESET_PLAYER_COLOR = 'RESET_PLAYER_COLOR'
 
 const gameReducer = (state, action) => {
   switch (action) {
     case SET_PLAYER_DIRECTION_LEFT:
       return {
         ...state,
-        player: setDirectionLeft(state.player),
+        player: direction.setLeft(state.player),
       }
     case SET_PLAYER_DIRECTION_RIGHT:
       return {
         ...state,
-        player: setDirectionRight(state.player),
+        player: direction.setRight(state.player),
       }
     case MOVE_PLAYER:
       return {
         ...state,
-        player: movePlayer(state),
+        player: player.move(state.player, state.board),
       }
     case MOVE_BALL:
       return {
@@ -43,22 +41,32 @@ const gameReducer = (state, action) => {
     case SET_BALL_DIRECTION_BOTTOM:
       return {
         ...state,
-        ball: setDirectionBottom(state.ball),
+        ball: direction.setBottom(state.ball),
       }
     case SET_BALL_DIRECTION_TOP:
       return {
         ...state,
-        ball: setDirectionTop(state.ball),
+        ball: direction.setTop(state.ball),
       }
     case SET_BALL_DIRECTION_LEFT:
       return {
         ...state,
-        ball: setDirectionLeft(state.ball),
+        ball: direction.setLeft(state.ball),
       }
     case SET_BALL_DIRECTION_RIGHT:
       return {
         ...state,
-        ball: setDirectionRight(state.ball),
+        ball: direction.setRight(state.ball),
+      }
+    case HIGHLIGHT_PLAYER_COLOR:
+      return {
+        ...state,
+        player: player.highlightColor(state.player),
+      }
+    case RESET_PLAYER_COLOR:
+      return {
+        ...state,
+        player: player.defaultColor(state.player),
       }
     default:
       return state
@@ -99,7 +107,12 @@ export const useGame = (level) => {
     if (ball.willBumpBottom(game)) dispatch(SET_BALL_DIRECTION_TOP)
     if (ball.willBumpLeft(game)) dispatch(SET_BALL_DIRECTION_RIGHT)
     if (ball.willBumpRight(game)) dispatch(SET_BALL_DIRECTION_LEFT)
-    if (ball.willBumpPlayer(game)) dispatch(SET_BALL_DIRECTION_TOP)
+    if (ball.willBumpPlayer(game)) {
+      dispatch(SET_BALL_DIRECTION_TOP)
+      dispatch(HIGHLIGHT_PLAYER_COLOR)
+    } else {
+      dispatch(RESET_PLAYER_COLOR)
+    }
 
     dispatch(MOVE_BALL)
     dispatch(MOVE_PLAYER)

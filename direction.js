@@ -1,0 +1,22 @@
+export const LEFT=-1
+export const RIGHT=1
+const TOP=-1
+const BOTTOM=1
+
+const TOP_BOTTOM_PROP='dy'
+const LEFT_RIGHT_PROP='dx'
+
+const set = prop => value => state => ({
+  ...state,
+  [prop]: value,
+})
+
+const setLeftRight = set(LEFT_RIGHT_PROP)
+
+export const setLeft = setLeftRight(LEFT)
+export const setRight = setLeftRight(RIGHT)
+
+const setTopBottom = set(TOP_BOTTOM_PROP)
+
+export const setTop = setTopBottom(TOP)
+export const setBottom = setTopBottom(BOTTOM)
