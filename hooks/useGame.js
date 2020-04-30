@@ -5,6 +5,7 @@ import * as game from '../helpers/game'
 import * as ball from '../helpers/ball'
 import * as player from '../helpers/player'
 import * as actions from '../helpers/actions'
+import * as direction from '../helpers/direction'
 
 export const useGame = (board) => {
   const [currentGame, setCurrentGame] = useState(game.init(board))
@@ -27,13 +28,26 @@ export const useGame = (board) => {
     const brickCollide = ball.findBrickCollision(newGame)
     if (brickCollide) {
       brickCollide.color = 'red'
+      const {ball} = newGame
+      if (ball.dy === direction.TOP && ball.y === brickCollide.top + brickCollide.height) {
+        game.update(newGame, actions.SET_BALL_DIRECTION_BOTTOM)
+      }
+      if (ball.dy === direction.BOTTOM && ball.y + ball.height === brickCollide.top) {
+        game.update(newGame, actions.SET_BALL_DIRECTION_TOP)
+      }
+      if (ball.dx === direction.RIGHT && ball.x + ball.width === brickCollide.left) {
+        game.update(newGame, actions.SET_BALL_DIRECTION_LEFT)
+      }
+      if (ball.dx === direction.LEFT && ball.x === brickCollide.left + brickCollide.width) {
+        game.update(newGame, actions.SET_BALL_DIRECTION_RIGHT)
+      }
     }
 
     game.update(newGame, actions.MOVE_BALL)
     game.update(newGame, actions.MOVE_PLAYER)
   
     setCurrentGame(newGame)
-  }, 30)
+  }, 200)
 
   const onKeyLeft = () => {
     const newGame = {...currentGame}
