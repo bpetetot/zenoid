@@ -1,13 +1,15 @@
 import React, { memo } from 'react'
 
-const Brick = ({ top = 0, left = 0, width = 6, height = 1, color = 'yellow' }) => {
+import * as brick from '../helpers/brick'
+
+const Brick = ({ y, x, width, height, type }) => {
   return (
     <box
-      top={top}
-      left={left}
+      top={y}
+      left={x}
       width={width}
       height={height}
-      style={{ bg: color }}
+      style={{ bg: brick.getColor(type) }}
     />
   )
 }

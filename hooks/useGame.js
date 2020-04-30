@@ -6,6 +6,7 @@ import * as ball from '../helpers/ball'
 import * as player from '../helpers/player'
 import * as actions from '../helpers/actions'
 import * as direction from '../helpers/direction'
+import * as brick from '../helpers/brick'
 
 export const useGame = (board) => {
   const [currentGame, setCurrentGame] = useState(game.init(board))
@@ -27,19 +28,22 @@ export const useGame = (board) => {
 
     const brickCollide = ball.findBrickCollision(newGame)
     if (brickCollide) {
-      brickCollide.color = 'red'
       const {ball} = newGame
-      if (ball.dy === direction.TOP && ball.y === brickCollide.top + brickCollide.height) {
+      if (ball.dy === direction.TOP && ball.y === brickCollide.y + brickCollide.height) {
         game.update(newGame, actions.SET_BALL_DIRECTION_BOTTOM)
       }
-      if (ball.dy === direction.BOTTOM && ball.y + ball.height === brickCollide.top) {
+      if (ball.dy === direction.BOTTOM && ball.y + ball.height === brickCollide.y) {
         game.update(newGame, actions.SET_BALL_DIRECTION_TOP)
       }
-      if (ball.dx === direction.RIGHT && ball.x + ball.width === brickCollide.left) {
+      if (ball.dx === direction.RIGHT && ball.x + ball.width === brickCollide.x) {
         game.update(newGame, actions.SET_BALL_DIRECTION_LEFT)
       }
-      if (ball.dx === direction.LEFT && ball.x === brickCollide.left + brickCollide.width) {
+      if (ball.dx === direction.LEFT && ball.x === brickCollide.x + brickCollide.width) {
         game.update(newGame, actions.SET_BALL_DIRECTION_RIGHT)
+      }
+
+      if (brickCollide.type === brick.BREAKABLE) {
+        brickCollide.visible = false
       }
     }
 
@@ -47,7 +51,7 @@ export const useGame = (board) => {
     game.update(newGame, actions.MOVE_PLAYER)
   
     setCurrentGame(newGame)
-  }, 200)
+  }, 40)
 
   const onKeyLeft = () => {
     const newGame = {...currentGame}

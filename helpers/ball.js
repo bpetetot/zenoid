@@ -57,13 +57,8 @@ export const findBrickCollision = ({ board, ball }) => {
     height: ball.height,
   }
 
-  return board.bricks.find(brick => {
-    const brickBBox = {
-      ...brick,
-      x: brick.left,
-      y: brick.top,
-    }
-    return willCollideObject(ballBBox, brickBBox)
+  return board.bricks.filter(b => b.visible).find(brick => {
+    return willCollideObject(ballBBox, brick)
   })
 }
 

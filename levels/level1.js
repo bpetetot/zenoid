@@ -1,17 +1,18 @@
+import {BUMP} from '../helpers/brick'
+
 export default {
 	cols: 80,
   rows: 24,
   bricks: [
-    { left: 0, top: 2, width: 6, height: 3 },
-    { left: 20, top: 2, width: 6, height: 3 },
-    { left: 40, top: 2, width: 6, height: 3 },
-    { left: 50, top: 2, width: 6, height: 3 },
-    { left: 70, top: 2, width: 6, height: 3 },
-
-    { left: 0, top: 10, width: 6, height: 2 },
-    { left: 20, top: 10, width: 6, height: 2 },
-    { left: 40, top: 10, width: 6, height: 2 },
-    { left: 50, top: 10, width: 6, height: 2 },
-    { left: 70, top: 10, width: 6, height: 2 },
+    { x: 0, y: 2, width: 6, height: 3, type: BUMP },
+    { x: 20, y: 2, width: 6, height: 3 },
+    { x: 40, y: 2, width: 6, height: 3 },
+    { x: 50, y: 2, width: 6, height: 3, type: BUMP },
+    { x: 70, y: 2, width: 6, height: 3 },
+    { x: 0, y: 10, width: 6, height: 2, type: BUMP },
+    { x: 20, y: 10, width: 6, height: 2 },
+    { x: 40, y: 10, width: 6, height: 2, type: BUMP },
+    { x: 50, y: 10, width: 6, height: 2 },
+    { x: 70, y: 10, width: 6, height: 2 },
   ],
 }

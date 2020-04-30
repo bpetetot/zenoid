@@ -14,7 +14,7 @@ const Board = ({ cols, rows, bricks, player, ball }) => {
       border={{ type: 'line' }}
       style={{ border: { fg: 'grey', bg: 'grey' } }}
     >
-      {bricks.map((props, i) => <Brick key={i} {...props}/>)}
+      {bricks.filter(b => b.visible).map((props, i) => <Brick key={i} {...props}/>)}
       <Player {...player} />
       <Ball {...ball} />
     </box>

@@ -1,8 +1,12 @@
 import * as ball from '../helpers/ball'
 import * as player from '../helpers/player'
+import * as brick from '../helpers/brick'
 
 export const init = (board) => ({
-  board,
+  board: {
+    ...board,
+    bricks: board.bricks.map(brick.init),
+  },
   player: player.init(board),
   ball: ball.init(board),
 })
