@@ -12,12 +12,16 @@ export const useGame = (board) => {
   const [currentGame, setCurrentGame] = useState(game.init(board))
 
   useInterval(() => {
-    const newGame = {...currentGame}
-  
-    if (ball.willBumpTop(newGame)) game.update(newGame, actions.SET_BALL_DIRECTION_BOTTOM)
-    if (ball.willBumpBottom(newGame)) game.update(newGame, actions.SET_BALL_DIRECTION_TOP)
-    if (ball.willBumpLeft(newGame)) game.update(newGame, actions.SET_BALL_DIRECTION_RIGHT)
-    if (ball.willBumpRight(newGame)) game.update(newGame, actions.SET_BALL_DIRECTION_LEFT)
+    const newGame = { ...currentGame }
+
+    if (ball.willBumpTop(newGame))
+      game.update(newGame, actions.SET_BALL_DIRECTION_BOTTOM)
+    if (ball.willBumpLeft(newGame))
+      game.update(newGame, actions.SET_BALL_DIRECTION_RIGHT)
+    if (ball.willBumpRight(newGame))
+      game.update(newGame, actions.SET_BALL_DIRECTION_LEFT)
+    if (ball.willBumpBottom(newGame))
+      game.update(newGame, actions.SET_BALL_DIRECTION_TOP)
 
     if (ball.willBumpPlayer(newGame)) {
       game.update(newGame, actions.SET_BALL_DIRECTION_TOP)
@@ -28,17 +32,29 @@ export const useGame = (board) => {
 
     const brickCollide = ball.findBrickCollision(newGame)
     if (brickCollide) {
-      const {ball} = newGame
-      if (ball.dy === direction.TOP && ball.y === brickCollide.y + brickCollide.height) {
+      const { ball } = newGame
+      if (
+        ball.dy === direction.TOP &&
+        ball.y === brickCollide.y + brickCollide.height
+      ) {
         game.update(newGame, actions.SET_BALL_DIRECTION_BOTTOM)
       }
-      if (ball.dy === direction.BOTTOM && ball.y + ball.height === brickCollide.y) {
+      if (
+        ball.dy === direction.BOTTOM &&
+        ball.y + ball.height === brickCollide.y
+      ) {
         game.update(newGame, actions.SET_BALL_DIRECTION_TOP)
       }
-      if (ball.dx === direction.RIGHT && ball.x + ball.width === brickCollide.x) {
+      if (
+        ball.dx === direction.RIGHT &&
+        ball.x + ball.width === brickCollide.x
+      ) {
         game.update(newGame, actions.SET_BALL_DIRECTION_LEFT)
       }
-      if (ball.dx === direction.LEFT && ball.x === brickCollide.x + brickCollide.width) {
+      if (
+        ball.dx === direction.LEFT &&
+        ball.x === brickCollide.x + brickCollide.width
+      ) {
         game.update(newGame, actions.SET_BALL_DIRECTION_RIGHT)
       }
 
@@ -47,29 +63,41 @@ export const useGame = (board) => {
       }
     }
 
-    game.update(newGame, actions.MOVE_BALL)
+    if (newGame.started) {
+      game.update(newGame, actions.MOVE_BALL)
+    }
     game.update(newGame, actions.MOVE_PLAYER)
-  
+
     setCurrentGame(newGame)
   }, 40)
 
   const onKeyLeft = () => {
-    const newGame = {...currentGame}
+    const newGame = { ...currentGame }
     if (!player.isMovingLeft(newGame.player)) {
+      if (!newGame.started) game.update(newGame, actions.START_GAME)
       game.update(newGame, actions.SET_PLAYER_DIRECTION_LEFT)
       setCurrentGame(newGame)
     }
   }
 
-  const onKeyRight =() => {
-    const newGame = {...currentGame}
+  const onKeyRight = () => {
+    const newGame = { ...currentGame }
     if (!player.isMovingRight(newGame.player)) {
+      if (!newGame.started) game.update(newGame, actions.START_GAME)
       game.update(newGame, actions.SET_PLAYER_DIRECTION_RIGHT)
       setCurrentGame(newGame)
     }
   }
 
-  return [currentGame, onKeyLeft, onKeyRight]
+  const onKeySpace = () => {
+    const newGame = { ...currentGame }
+    if (!newGame.started) {
+      game.update(newGame, actions.START_GAME)
+      setCurrentGame(newGame)
+    }
+  }
+
+  return { game: currentGame, onKeyLeft, onKeyRight, onKeySpace }
 }
 
 export default useGame

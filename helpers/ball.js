@@ -5,10 +5,10 @@ const BALL_HEIGHT = 1
 const BALL_WIDTH = 2
 const BALL_SPEED = 100
 
-export const init = (board) => ({
+export const init = (player) => ({
   speed: BALL_SPEED,
-  x: Math.floor(board.cols / 2),
-  y: Math.floor(board.rows / 2),
+  x: player.x + Math.floor((player.width / 2) - (BALL_WIDTH / 2)),
+  y: player.y - BALL_HEIGHT,
   dx: direction.RIGHT,
   dy: direction.BOTTOM,
   width: BALL_WIDTH,
