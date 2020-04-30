@@ -7,9 +7,10 @@ import * as player from '../helpers/player'
 import * as actions from '../helpers/actions'
 import * as direction from '../helpers/direction'
 import * as brick from '../helpers/brick'
+import * as board from '../helpers/board'
 
-export const useGame = (board) => {
-  const [currentGame, setCurrentGame] = useState(game.init(board))
+export const useGame = (level) => {
+  const [currentGame, setCurrentGame] = useState(game.init(level))
 
   useInterval(() => {
     const newGame = { ...currentGame }
@@ -21,7 +22,7 @@ export const useGame = (board) => {
     if (ball.willBumpRight(newGame))
       game.update(newGame, actions.SET_BALL_DIRECTION_LEFT)
     if (ball.willBumpBottom(newGame))
-      game.update(newGame, actions.SET_BALL_DIRECTION_TOP)
+      game.update(newGame, actions.GAME_OVER)
 
     if (ball.willBumpPlayer(newGame)) {
       game.update(newGame, actions.SET_BALL_DIRECTION_TOP)
@@ -61,6 +62,10 @@ export const useGame = (board) => {
       if (brickCollide.type === brick.BREAKABLE) {
         brickCollide.visible = false
       }
+    }
+
+    if (board.isFinished(newGame.board)) {
+      game.update(newGame, actions.WIN)
     }
 
     if (newGame.started) {

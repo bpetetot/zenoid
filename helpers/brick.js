@@ -7,7 +7,6 @@ export const init = (brick) => ({
   type: brick.type || BREAKABLE,
 })
 
-
 export const getColor = (type) => {
   if (type === BUMP) return 'white'
   return 'yellow'

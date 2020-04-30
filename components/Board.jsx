@@ -4,19 +4,34 @@ import Brick from './Brick.jsx';
 import Player from './Player.jsx';
 import Ball from './Ball.jsx';
 
-const Board = ({ cols, rows, bricks, player, ball }) => {
+import * as board from '../helpers/board'
+
+const Board = (props) => {
+  const { player, ball, over, win } = props
+
   return (
     <box
       left="center"
       top="center"
-      width={cols + 2}
-      height={rows + 2}
+      width={props.board.cols + 2}
+      height={props.board.rows + 2}
       border={{ type: 'line' }}
       style={{ border: { fg: 'grey', bg: 'grey' } }}
     >
-      {bricks.filter(b => b.visible).map((props, i) => <Brick key={i} {...props}/>)}
-      <Player {...player} />
-      <Ball {...ball} />
+      { over || win ? (
+          <box
+            top="center" 
+            left="center" 
+            width="50%" 
+            height="50%"
+          >{ over ? 'GAME OVER.' : 'YOU WIN!' }</box>
+        ): (
+          <>
+            {board.getBricks(props.board).map((props, i) => <Brick key={i} {...props}/>)}
+            <Player {...player} />
+            <Ball {...ball} />
+          </>
+      )}
     </box>
   )
 }

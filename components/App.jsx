@@ -29,7 +29,7 @@ const App = () => {
     }
   }, [onKeyLeft, onKeyRight, onKeySpace])
 
-  return <Board {...game.board} player={game.player} ball={game.ball} />
+  return <Board {...game} />
 }
 
 render(<App />, screen)

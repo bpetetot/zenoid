@@ -22,5 +22,9 @@ export const update = (game, action) => {
 
   if (action === actions.START_GAME) {
     game.started = true
+  } else if (action === actions.GAME_OVER) {
+    game.over = true
+  } else if (action === actions.WIN) {
+    game.win = true
   }
 };

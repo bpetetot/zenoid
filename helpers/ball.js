@@ -1,5 +1,7 @@
 import * as actions from './actions'
 import * as direction from './direction'
+import * as brick from './brick'
+import * as board from './board'
 
 const BALL_HEIGHT = 1
 const BALL_WIDTH = 2
@@ -49,7 +51,8 @@ export const willBumpPlayer = ({ player, ball }) => {
   return willCollideObject(playerBBox, ballBBox)
 }
 
-export const findBrickCollision = ({ board, ball }) => {
+export const findBrickCollision = (game) => {
+  const { ball } = game
   const ballBBox = {
     x: ball.x + ball.dx,
     y: ball.y + ball.dy,
@@ -57,7 +60,7 @@ export const findBrickCollision = ({ board, ball }) => {
     height: ball.height,
   }
 
-  return board.bricks.filter(b => b.visible).find(brick => {
+  return board.getBricks(game.board).find(brick => {
     return willCollideObject(ballBBox, brick)
   })
 }
