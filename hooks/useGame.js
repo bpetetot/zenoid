@@ -79,7 +79,10 @@ export const useGame = (level) => {
   const onKeyLeft = () => {
     const newGame = { ...currentGame }
     if (!player.isMovingLeft(newGame.player)) {
-      if (!newGame.started) game.update(newGame, actions.START_GAME)
+      if (!newGame.started) {
+        game.update(newGame, actions.SET_BALL_DIRECTION_LEFT)
+        game.update(newGame, actions.START_GAME)
+      }
       game.update(newGame, actions.SET_PLAYER_DIRECTION_LEFT)
       setCurrentGame(newGame)
     }
@@ -88,7 +91,10 @@ export const useGame = (level) => {
   const onKeyRight = () => {
     const newGame = { ...currentGame }
     if (!player.isMovingRight(newGame.player)) {
-      if (!newGame.started) game.update(newGame, actions.START_GAME)
+      if (!newGame.started) {
+        game.update(newGame, actions.SET_BALL_DIRECTION_RIGHT)
+        game.update(newGame, actions.START_GAME)
+      } 
       game.update(newGame, actions.SET_PLAYER_DIRECTION_RIGHT)
       setCurrentGame(newGame)
     }

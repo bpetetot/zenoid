@@ -12,7 +12,7 @@ export const init = (player) => ({
   x: player.x + Math.floor((player.width / 2) - (BALL_WIDTH / 2)),
   y: player.y - BALL_HEIGHT,
   dx: direction.RIGHT,
-  dy: direction.BOTTOM,
+  dy: direction.TOP,
   width: BALL_WIDTH,
   height: BALL_HEIGHT,
 })
