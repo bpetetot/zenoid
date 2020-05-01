@@ -8,6 +8,7 @@ import * as actions from '../helpers/actions'
 import * as direction from '../helpers/direction'
 import * as brick from '../helpers/brick'
 import * as board from '../helpers/board'
+import * as collision from '../helpers/collision'
 
 export const useGame = (level) => {
   const [currentGame, setCurrentGame] = useState(game.init(level))
@@ -34,28 +35,16 @@ export const useGame = (level) => {
     const brickCollide = ball.findBrickCollision(newGame)
     if (brickCollide) {
       const { ball } = newGame
-      if (
-        ball.dy === direction.TOP &&
-        ball.y === brickCollide.y + brickCollide.height
-      ) {
+      if (collision.fromBottom(ball, brickCollide)) {
         game.update(newGame, actions.SET_BALL_DIRECTION_BOTTOM)
       }
-      if (
-        ball.dy === direction.BOTTOM &&
-        ball.y + ball.height === brickCollide.y
-      ) {
+      if (collision.fromTop(ball, brickCollide)) {
         game.update(newGame, actions.SET_BALL_DIRECTION_TOP)
       }
-      if (
-        ball.dx === direction.RIGHT &&
-        ball.x + ball.width === brickCollide.x
-      ) {
+      if (collision.fromLeft(ball, brickCollide)) {
         game.update(newGame, actions.SET_BALL_DIRECTION_LEFT)
       }
-      if (
-        ball.dx === direction.LEFT &&
-        ball.x === brickCollide.x + brickCollide.width
-      ) {
+      if (collision.fromRight(ball, brickCollide)) {
         game.update(newGame, actions.SET_BALL_DIRECTION_RIGHT)
       }
 

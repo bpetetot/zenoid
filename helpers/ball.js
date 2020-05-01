@@ -1,7 +1,7 @@
 import * as actions from './actions'
 import * as direction from './direction'
-import * as brick from './brick'
 import * as board from './board'
+import * as collision from './collision'
 
 const BALL_HEIGHT = 1
 const BALL_WIDTH = 2
@@ -33,6 +33,13 @@ export const willBumpRight = (game) => {
   return game.ball.x + game.ball.dx + game.ball.width > game.board.cols
 }
 
+const getBBox = ball => ({
+  x: ball.x + ball.dx,
+  y: ball.y + ball.dy,
+  width: ball.width,
+  height: ball.height,
+})
+
 export const willBumpPlayer = ({ player, ball }) => {
   const playerBBox = {
     x: player.x,
@@ -40,38 +47,16 @@ export const willBumpPlayer = ({ player, ball }) => {
     width: player.width,
     height: player.height,
   }
+  const willCollideWithBall = collision.willCollide(getBBox(ball))
 
-  const ballBBox = {
-    x: ball.x + ball.dx,
-    y: ball.y + ball.dy,
-    width: ball.width,
-    height: ball.height,
-  }
-
-  return willCollideObject(playerBBox, ballBBox)
+  return willCollideWithBall(playerBBox)
 }
 
 export const findBrickCollision = (game) => {
-  const { ball } = game
-  const ballBBox = {
-    x: ball.x + ball.dx,
-    y: ball.y + ball.dy,
-    width: ball.width,
-    height: ball.height,
-  }
+  const ballBBox = getBBox(game.ball)
+  const willCollideWithBall = collision.willCollide(ballBBox)
 
-  return board.getBricks(game.board).find(brick => {
-    return willCollideObject(ballBBox, brick)
-  })
-}
-
-const willCollideObject = (box1, box2) => {
-  return (
-    box1.x < box2.x + box2.width &&
-    box1.x + box1.width > box2.x &&
-    box1.y < box2.y + box2.height &&
-    box1.y + box1.height > box2.y
-  )
+  return board.getBricks(game.board).find(willCollideWithBall)
 }
 
 export const move = (ball) => ({
