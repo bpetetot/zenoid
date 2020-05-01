@@ -21,7 +21,7 @@ const Panel = ({ top, left, width, height, game }) => {
         {text.style(` ZENOID v0.1`, { bold: true, fg: 'green' })}
       </box>
       <box top={4}>
-        {text.style(` Level: -`)}
+        {text.style(` Level: ${game.currentLevel}`)}
       </box>
       <box top={6}>
         {text.style(` Lives: -`)}

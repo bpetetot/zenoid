@@ -1,19 +1,19 @@
 import React, { memo } from 'react'
 
-import level from '../levels/level0'
 import useGame from '../hooks/useGame'
 
 import Panel, { PANEL_WIDTH } from './Panel'
 import Footer, { FOOTER_HEIGHT } from './Footer'
 import GameOver from './GameOver'
 import GameWon from './GameWon'
+import NextLevel from './NextLevel'
 import Game from './Game'
 
 import * as board from '../helpers/board'
 import * as game from '../helpers/game'
 
 const Board = ({ onRestart }) => {
-  const { currentGame, ...keyHandlers } = useGame(level)
+  const { currentGame, startNextLevel, ...keyHandlers } = useGame()
 
   const boardWidth = board.getWidth(currentGame.board)
   const boardHeight = board.getHeight(currentGame.board)
@@ -30,6 +30,7 @@ const Board = ({ onRestart }) => {
       <box width={boardWidth} height={boardHeight}>
         {game.isOver(currentGame) && <GameOver onRestart={onRestart} />}
         {game.isWon(currentGame) && <GameWon onRestart={onRestart} />}
+        {game.isLevelWon(currentGame) && <NextLevel startNextLevel={startNextLevel} />}
         {displayGame && <Game game={currentGame} {...keyHandlers} />}
       </box>
       <Panel

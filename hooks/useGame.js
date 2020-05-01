@@ -5,15 +5,18 @@ import * as game from '../helpers/game'
 import * as ball from '../helpers/ball'
 import * as player from '../helpers/player'
 import * as actions from '../helpers/actions'
-import * as direction from '../helpers/direction'
 import * as brick from '../helpers/brick'
 import * as board from '../helpers/board'
 import * as collision from '../helpers/collision'
 
 export const useGame = (level) => {
-  const [currentGame, setCurrentGame] = useState(game.init(level))
+  const [currentGame, setCurrentGame] = useState(game.init())
 
   useInterval(() => {
+    if (!game.isReady(currentGame) && !game.isPlaying(currentGame)) {
+      return
+    }
+
     const newGame = { ...currentGame }
 
     if (ball.willBumpTop(newGame))
@@ -55,7 +58,12 @@ export const useGame = (level) => {
     }
 
     if (board.isFinished(newGame.board)) {
-      game.update(newGame, actions.GAME_WON)
+      const nextLevel = newGame.currentLevel + 1
+      if (nextLevel <= newGame.levelsCount) {
+        game.update(newGame, actions.LEVEL_WON)
+      } else {
+        game.update(newGame, actions.GAME_WON)
+      }
     }
 
     if (game.isPlaying(newGame)) {
@@ -98,11 +106,13 @@ export const useGame = (level) => {
     }
   }
 
-  const reset = () => {
-    setCurrentGame(game.init(level))
+  const startNextLevel = () => {
+    const newGame = { ...currentGame }
+    game.update(newGame, actions.START_NEXT_LEVEL)
+    setCurrentGame(newGame)
   }
 
-  return { currentGame, onMoveLeft, onMoveRight, onStart, reset }
+  return { currentGame, onMoveLeft, onMoveRight, onStart, startNextLevel }
 }
 
 export default useGame
