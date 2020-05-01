@@ -3,10 +3,31 @@ import * as ball from '../helpers/ball'
 import * as player from '../helpers/player'
 import * as brick from '../helpers/brick'
 
+const READY='READY'
+const PLAYING='PLAYING'
+const WON='WON'
+const OVER='OVER'
+
+const isStatus = status => game => game.status === status
+
+export const isOver = isStatus(OVER)
+export const isPlaying = isStatus(PLAYING)
+export const isWon = isStatus(WON)
+export const isReady = isStatus(READY)
+
+const setGameStatus = status => game => {
+  game.status = status
+  return game
+}
+
+const setGameWon = setGameStatus(WON)
+const setGameOver = setGameStatus(OVER)
+const setGamePlaying = setGameStatus(PLAYING)
+
 export const init = (level) => {
   const initPlayer = player.init(level)
   return ({
-    started: false,
+    status: READY,
     board: {
       ...level,
       bricks: level.bricks.map(brick.init),
@@ -16,24 +37,29 @@ export const init = (level) => {
   })
 }
 
-export const update = (game, action) => {
-  const { type, payload } = normalizeAction(action)
-
-  game.player = player.reducer(game, { type, payload })
-  game.ball = ball.reducer(game, { type, payload })
-
-  if (type === actions.START_GAME) {
-    game.started = true
-  } else if (type === actions.GAME_OVER) {
-    game.over = true
-    game.started = false
-  } else if (type === actions.WIN) {
-    game.win = true
-    game.started = false
+const updateStatus = (game, action) => {
+  switch (action.type) {
+    case actions.GAME_OVER:
+      return setGameOver(game)
+    case actions.GAME_WON:
+      return setGameWon(game)
+    case actions.PLAY_GAME:
+      return setGamePlaying(game)
+    default:
+      return game
   }
 }
 
-const normalizeAction = (action) => {
+export const update = (game, actionName) => {
+  const action = createAction(actionName)
+
+  game.player = player.reducer(game, action)
+  game.ball = ball.reducer(game, action)
+
+  return updateStatus(game, action)
+}
+
+const createAction = (action) => {
   if (!action) {
     return {}
   }

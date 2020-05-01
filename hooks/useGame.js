@@ -65,10 +65,10 @@ export const useGame = (level) => {
     }
 
     if (board.isFinished(newGame.board)) {
-      game.update(newGame, actions.WIN)
+      game.update(newGame, actions.GAME_WON)
     }
 
-    if (newGame.started) {
+    if (game.isPlaying(newGame)) {
       game.update(newGame, actions.MOVE_BALL)
       game.update(newGame, actions.MOVE_PLAYER)
     }
@@ -79,9 +79,9 @@ export const useGame = (level) => {
   const onKeyLeft = () => {
     const newGame = { ...currentGame }
     if (!player.isMovingLeft(newGame.player)) {
-      if (!newGame.started) {
+      if (game.isReady(newGame)) {
         game.update(newGame, actions.SET_BALL_DIRECTION_LEFT)
-        game.update(newGame, actions.START_GAME)
+        game.update(newGame, actions.PLAY_GAME)
       }
       game.update(newGame, actions.SET_PLAYER_DIRECTION_LEFT)
       setCurrentGame(newGame)
@@ -91,9 +91,9 @@ export const useGame = (level) => {
   const onKeyRight = () => {
     const newGame = { ...currentGame }
     if (!player.isMovingRight(newGame.player)) {
-      if (!newGame.started) {
+      if (game.isReady(newGame)) {
         game.update(newGame, actions.SET_BALL_DIRECTION_RIGHT)
-        game.update(newGame, actions.START_GAME)
+        game.update(newGame, actions.PLAY_GAME)
       } 
       game.update(newGame, actions.SET_PLAYER_DIRECTION_RIGHT)
       setCurrentGame(newGame)
@@ -102,8 +102,8 @@ export const useGame = (level) => {
 
   const onKeySpace = () => {
     const newGame = { ...currentGame }
-    if (!newGame.started) {
-      game.update(newGame, actions.START_GAME)
+    if (game.isReady(newGame)) {
+      game.update(newGame, actions.PLAY_GAME)
       setCurrentGame(newGame)
     }
   }
@@ -112,7 +112,7 @@ export const useGame = (level) => {
     setCurrentGame(game.init(level))
   }
 
-  return { game: currentGame, onKeyLeft, onKeyRight, onKeySpace, reset }
+  return { currentGame, onKeyLeft, onKeyRight, onKeySpace, reset }
 }
 
 export default useGame

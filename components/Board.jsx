@@ -3,18 +3,17 @@ import React, { memo, useLayoutEffect, useRef } from 'react'
 import level from '../levels/level0'
 import useGame from '../hooks/useGame'
 
-import Brick from './Brick.jsx'
-import Player from './Player.jsx'
-import Ball from './Ball.jsx'
 import Panel, { PANEL_WIDTH } from './Panel'
 import Footer, { FOOTER_HEIGHT } from './Footer'
 import GameOver from './GameOver'
-import Win from './Win'
+import GameWon from './GameWon'
+import Game from './Game'
 
 import * as board from '../helpers/board'
+import * as game from '../helpers/game'
 
 const Board = ({ onRestart }) => {
-  const { game, onKeyLeft, onKeyRight, onKeySpace } = useGame(level)
+  const { currentGame, onKeyLeft, onKeyRight, onKeySpace } = useGame(level)
   const box = useRef(null)
 
   useLayoutEffect(() => {
@@ -31,39 +30,36 @@ const Board = ({ onRestart }) => {
     }
   }, [onKeyLeft, onKeyRight, onKeySpace])
 
+  const boardWidth = board.getWidth(currentGame.board)
+  const boardHeight = board.getHeight(currentGame.board)
+
+  const displayGame = game.isReady(currentGame) || game.isPlaying(currentGame)
+
   return (
     <box
       ref={box}
       left="center"
       top="center"
-      width={game.board.cols + 2 + PANEL_WIDTH}
-      height={game.board.rows + 2 + FOOTER_HEIGHT}
-      focused={!game.over && !game.win}
+      width={boardWidth + PANEL_WIDTH}
+      height={boardHeight + FOOTER_HEIGHT}
+      focused={displayGame}
     >
       <box
-        width={game.board.cols + 2}
-        height={game.board.rows + 2}
+        width={boardWidth}
+        height={boardHeight}
         border={{ type: 'line' }}
         style={{ border: { fg: 'grey' } }}
       >
-        {game.over && <GameOver onRestart={onRestart} />}
-        {game.win && <Win onRestart={onRestart} />}
-        {!game.over && !game.win && (
-          <>
-            {board.getBricks(game.board).map((brick, i) => (
-              <Brick key={i} {...brick} />
-            ))}
-            <Player {...game.player} />
-            <Ball {...game.ball} />
-          </>
-        )}
+        {game.isOver(currentGame) && <GameOver onRestart={onRestart} />}
+        {game.isWon(currentGame) && <GameWon onRestart={onRestart} />}
+        {displayGame && <Game game={currentGame} />}
       </box>
       <Panel
         top={0}
-        left={game.board.cols + 2}
+        left={boardWidth}
         width={PANEL_WIDTH}
-        height={game.board.rows + 2}
-        game={game}
+        height={boardHeight}
+        game={currentGame}
       />
       <Footer />
     </box>

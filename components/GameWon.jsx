@@ -2,7 +2,7 @@ import React, { memo, useLayoutEffect, useRef } from 'react'
 
 import * as text from '../helpers/text'
 
-const Win = ({ onRestart }) => {
+const GameWon = ({ onRestart }) => {
   const box = useRef(null)
 
   useLayoutEffect(() => {
@@ -31,4 +31,4 @@ const Win = ({ onRestart }) => {
   )
 }
 
-export default memo(Win)
+export default memo(GameWon)

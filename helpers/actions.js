@@ -1,6 +1,6 @@
-export const START_GAME = 'START_GAME'
+export const PLAY_GAME = 'PLAY_GAME'
 export const GAME_OVER = 'GAME_OVER'
-export const WIN = 'WIN'
+export const GAME_WON = 'GAME_WON'
 export const MOVE_PLAYER = 'MOVE_PLAYER'
 export const SET_PLAYER_DIRECTION_LEFT = 'SET_PLAYER_DIRECTION_LEFT'
 export const SET_PLAYER_DIRECTION_RIGHT = 'SET_PLAYER_DIRECTION_RIGHT'
