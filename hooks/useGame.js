@@ -102,7 +102,11 @@ export const useGame = (level) => {
     }
   }
 
-  return { game: currentGame, onKeyLeft, onKeyRight, onKeySpace }
+  const reset = () => {
+    setCurrentGame(game.init(level))
+  }
+
+  return { game: currentGame, onKeyLeft, onKeyRight, onKeySpace, reset }
 }
 
 export default useGame

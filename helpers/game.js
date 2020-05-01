@@ -3,13 +3,13 @@ import * as ball from '../helpers/ball'
 import * as player from '../helpers/player'
 import * as brick from '../helpers/brick'
 
-export const init = (board) => {
-  const initPlayer = player.init(board)
+export const init = (level) => {
+  const initPlayer = player.init(level)
   return ({
     started: false,
     board: {
-      ...board,
-      bricks: board.bricks.map(brick.init),
+      ...level,
+      bricks: level.bricks.map(brick.init),
     },
     player: initPlayer,
     ball: ball.init(initPlayer),

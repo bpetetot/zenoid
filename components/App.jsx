@@ -16,16 +16,18 @@ const screen = blessed.screen({
 screen.key(['escape', 'q', 'C-c'], () => process.exit(0))
 
 const App = () => {
-  const { game, onKeyLeft, onKeyRight, onKeySpace } = useGame(level1)
+  const { game, onKeyLeft, onKeyRight, onKeySpace, reset } = useGame(level1)
 
   useLayoutEffect(() => {
     screen.key('left', onKeyLeft)
     screen.key('right', onKeyRight)
     screen.key('space', onKeySpace)
+    screen.key('r', reset)
     return () => {
       screen.unkey('left', onKeyLeft)
       screen.unkey('right', onKeyRight)
       screen.unkey('space', onKeySpace)
+      screen.unkey('r', reset)
     }
   }, [onKeyLeft, onKeyRight, onKeySpace])
 
