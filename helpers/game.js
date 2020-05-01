@@ -24,10 +24,16 @@ const setGameWon = setGameStatus(WON)
 const setGameOver = setGameStatus(OVER)
 const setGamePlaying = setGameStatus(PLAYING)
 
+const incrementScore = (game, step = 1) => {
+  game.score = game.score + step
+  return game
+}
+
 export const init = (level) => {
   const initPlayer = player.init(level)
   return ({
     status: READY,
+    score: 0,
     board: {
       ...level,
       bricks: level.bricks.map(brick.init),
@@ -37,7 +43,7 @@ export const init = (level) => {
   })
 }
 
-const updateStatus = (game, action) => {
+const updateGame = (game, action) => {
   switch (action.type) {
     case actions.GAME_OVER:
       return setGameOver(game)
@@ -45,6 +51,8 @@ const updateStatus = (game, action) => {
       return setGameWon(game)
     case actions.PLAY_GAME:
       return setGamePlaying(game)
+    case actions.INCREMENT_SCORE:
+      return incrementScore(game, action.payload)
     default:
       return game
   }
@@ -55,8 +63,9 @@ export const update = (game, actionName) => {
 
   game.player = player.reducer(game, action)
   game.ball = ball.reducer(game, action)
+  game.board.bricks = brick.reducer(game, action)
 
-  return updateStatus(game, action)
+  return updateGame(game, action)
 }
 
 const createAction = (action) => {

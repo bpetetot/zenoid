@@ -60,7 +60,11 @@ export const useGame = (level) => {
       }
 
       if (brickCollide.type === brick.BREAKABLE) {
-        brickCollide.visible = false
+        game.update(newGame, {
+          type: actions.KILL_BRICK,
+          payload: brickCollide.id,
+        })
+        game.update(newGame, actions.INCREMENT_SCORE)
       }
     }
 
