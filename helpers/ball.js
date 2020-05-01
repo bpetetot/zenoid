@@ -80,8 +80,8 @@ export const move = (ball) => ({
   y: ball.y + ball.dy,
 })
 
-export const reducer = (state, action) => {
-  switch (action) {
+export const reducer = (state, { type }) => {
+  switch (type) {
     case actions.MOVE_BALL:
       return move(state.ball)
     case actions.SET_BALL_DIRECTION_BOTTOM:

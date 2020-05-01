@@ -58,8 +58,8 @@ const setColor = color => player => {
 export const highlightColor = setColor(HIGHLIGHT_COLOR)
 export const defaultColor = setColor(DEFAULT_COLOR)
 
-export const reducer = (state, action) => {
-  switch (action) {
+export const reducer = (state, { type }) => {
+  switch (type) {
     case actions.SET_PLAYER_DIRECTION_LEFT:
       return direction.setLeft(state.player)
     case actions.SET_PLAYER_DIRECTION_RIGHT:

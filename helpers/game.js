@@ -17,14 +17,26 @@ export const init = (board) => {
 }
 
 export const update = (game, action) => {
-  game.player = player.reducer(game, action)
-  game.ball = ball.reducer(game, action)
+  const { type, payload } = normalizeAction(action)
 
-  if (action === actions.START_GAME) {
+  game.player = player.reducer(game, { type, payload })
+  game.ball = ball.reducer(game, { type, payload })
+
+  if (type === actions.START_GAME) {
     game.started = true
-  } else if (action === actions.GAME_OVER) {
+  } else if (type === actions.GAME_OVER) {
     game.over = true
-  } else if (action === actions.WIN) {
+  } else if (type === actions.WIN) {
     game.win = true
   }
-};
+}
+
+const normalizeAction = (action) => {
+  if (!action) {
+    return {}
+  }
+  if (typeof action === 'string') {
+    return { type: action }
+  }
+  return action
+}
