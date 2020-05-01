@@ -29,8 +29,6 @@ const Splashscreen = ({ onStart }) => {
       focused
       width="100%"
       height="100%"
-      border={{ type: 'line' }}
-      style={{ border: { fg: 'grey' } }}
     >
       <box width={60} height={8} top="40%" left="center">
         <Lcd ref={lcd} display="ZENOID" elements={6} color={color} />

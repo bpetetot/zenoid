@@ -70,11 +70,11 @@ export const useGame = (level) => {
 
     if (newGame.started) {
       game.update(newGame, actions.MOVE_BALL)
+      game.update(newGame, actions.MOVE_PLAYER)
     }
-    game.update(newGame, actions.MOVE_PLAYER)
 
     setCurrentGame(newGame)
-  }, 40)
+  }, 50)
 
   const onKeyLeft = () => {
     const newGame = { ...currentGame }

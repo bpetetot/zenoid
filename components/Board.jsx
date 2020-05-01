@@ -1,6 +1,6 @@
 import React, { memo, useLayoutEffect, useRef } from 'react'
 
-import level1 from '../levels/level1'
+import level from '../levels/level0'
 import useGame from '../hooks/useGame'
 
 import Brick from './Brick.jsx'
@@ -8,35 +8,37 @@ import Player from './Player.jsx'
 import Ball from './Ball.jsx'
 import Panel, { PANEL_WIDTH } from './Panel'
 import Footer, { FOOTER_HEIGHT } from './Footer'
+import GameOver from './GameOver'
+import Win from './Win'
 
 import * as board from '../helpers/board'
 
-const Board = ({ onGameOver }) => {
-  const { game, onKeyLeft, onKeyRight, onKeySpace } = useGame(level1)
+const Board = ({ onRestart }) => {
+  const { game, onKeyLeft, onKeyRight, onKeySpace } = useGame(level)
   const box = useRef(null)
 
   useLayoutEffect(() => {
+    if (!box.current) return
     box.current.key('left', onKeyLeft)
     box.current.key('right', onKeyRight)
     box.current.key('space', onKeySpace)
-    box.current.key('enter', onGameOver)
 
     return () => {
+      if (!box.current) return
       box.current.unkey('left', onKeyLeft)
       box.current.unkey('right', onKeyRight)
       box.current.unkey('space', onKeySpace)
-      box.current.unkey('enter', onGameOver)
     }
-  }, [onKeyLeft, onKeyRight, onKeySpace, onGameOver])
+  }, [onKeyLeft, onKeyRight, onKeySpace])
 
   return (
     <box
       ref={box}
-      focused
       left="center"
       top="center"
       width={game.board.cols + 2 + PANEL_WIDTH}
       height={game.board.rows + 2 + FOOTER_HEIGHT}
+      focused={!game.over && !game.win}
     >
       <box
         width={game.board.cols + 2}
@@ -44,16 +46,9 @@ const Board = ({ onGameOver }) => {
         border={{ type: 'line' }}
         style={{ border: { fg: 'grey' } }}
       >
-        {game.over || game.win ? (
-          <box top="center" left="center" width="50%" height="50%">
-            <text top="40%" left="center" width="80%">
-              {game.over ? 'GAME OVER.' : 'YOU WIN!'}
-            </text>
-            <text top="50%" left="center" width="80%">
-              {'Press <enter> to play again'}
-            </text>
-          </box>
-        ) : (
+        {game.over && <GameOver onRestart={onRestart} />}
+        {game.win && <Win onRestart={onRestart} />}
+        {!game.over && !game.win && (
           <>
             {board.getBricks(game.board).map((brick, i) => (
               <Brick key={i} {...brick} />

@@ -8,6 +8,6 @@ export const init = (brick) => ({
 })
 
 export const getColor = (type) => {
-  if (type === BUMP) return 'white'
+  if (type === BUMP) return 'grey'
   return 'yellow'
 }

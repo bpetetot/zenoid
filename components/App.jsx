@@ -21,7 +21,7 @@ const App = () => {
   return (
     <box width="100%" height="100%">
       {started ? (
-        <Board onGameOver={() => setStarted(false)} />
+        <Board onRestart={() => setStarted(false)} />
       ) : (
         <Splashscreen onStart={() => setStarted(true)} />
       )}
