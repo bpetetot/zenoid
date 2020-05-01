@@ -1,19 +1,14 @@
-import React, { memo, useLayoutEffect, useRef } from 'react'
+import React, { memo } from 'react'
 
+import useKeys from '../hooks/useKeys'
 import * as text from '../helpers/text'
 
 const GameWon = ({ onRestart }) => {
-  const box = useRef(null)
-
-  useLayoutEffect(() => {
-    box.current.key('space', onRestart)
-    return () => box.current.unkey('space', onRestart)
-  }, [onRestart])
+  const keysRef = useKeys({ space: onRestart })
 
   return (
     <box
-      ref={box}
-      focused
+      ref={keysRef}
       top="center"
       left="center"
       width="100%"

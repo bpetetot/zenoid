@@ -66,7 +66,7 @@ export const useGame = (level) => {
     setCurrentGame(newGame)
   }, 50)
 
-  const onKeyLeft = () => {
+  const onMoveLeft = () => {
     const newGame = { ...currentGame }
     if (!player.isMovingLeft(newGame.player)) {
       if (game.isReady(newGame)) {
@@ -78,7 +78,7 @@ export const useGame = (level) => {
     }
   }
 
-  const onKeyRight = () => {
+  const onMoveRight = () => {
     const newGame = { ...currentGame }
     if (!player.isMovingRight(newGame.player)) {
       if (game.isReady(newGame)) {
@@ -90,7 +90,7 @@ export const useGame = (level) => {
     }
   }
 
-  const onKeySpace = () => {
+  const onStart = () => {
     const newGame = { ...currentGame }
     if (game.isReady(newGame)) {
       game.update(newGame, actions.PLAY_GAME)
@@ -102,7 +102,7 @@ export const useGame = (level) => {
     setCurrentGame(game.init(level))
   }
 
-  return { currentGame, onKeyLeft, onKeyRight, onKeySpace, reset }
+  return { currentGame, onMoveLeft, onMoveRight, onStart, reset }
 }
 
 export default useGame

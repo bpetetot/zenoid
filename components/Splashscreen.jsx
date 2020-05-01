@@ -1,6 +1,8 @@
-import React, { memo, useState, useRef, useLayoutEffect } from 'react'
+import React, { memo, useState, useRef } from 'react'
+
 import { Lcd } from './Contrib'
 import useInterval from '../hooks/useInterval'
+import useKeys from '../hooks/useKeys'
 import * as text from '../helpers/text'
 
 const colors = ['red', 'green', 'blue']
@@ -8,7 +10,8 @@ const colors = ['red', 'green', 'blue']
 const Splashscreen = ({ onStart }) => {
   const [color, setColor] = useState('red')
   const lcd = useRef(null)
-  const box = useRef(null)
+
+  const keysRef = useKeys({ space: onStart })
 
   useInterval(() => {
     const value = Math.round(Math.random() * 1000)
@@ -18,15 +21,9 @@ const Splashscreen = ({ onStart }) => {
     setColor(newColor)
   }, 150)
 
-  useLayoutEffect(() => {
-    box.current.key('space', onStart)
-    return () => box.current.unkey('space', onStart)
-  }, [])
-
   return (
     <box
-      ref={box}
-      focused
+      ref={keysRef}
       width="100%"
       height="100%"
     >
