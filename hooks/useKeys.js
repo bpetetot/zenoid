@@ -1,5 +1,11 @@
 import { useLayoutEffect, useRef } from 'react'
 
+const forEach = (keyHandlers, callback) => {
+  Object.entries(keyHandlers).forEach(([key, handler]) => {
+    callback(key, handler)
+  })
+}
+
 export default (keyHandlers) => {
   const ref = useRef(null)
 
@@ -8,13 +14,14 @@ export default (keyHandlers) => {
 
     ref.current.focus()
     
-    Object.entries(keyHandlers).forEach(([key, handler]) => {
+    forEach(keyHandlers, (key, handler) => {
       ref.current.key(key, handler)
     })
 
     return () => {
       if (!ref.current) return
-      Object.entries(keyHandlers).forEach(([key, handler]) => {
+
+      forEach(keyHandlers, (key, handler) => {
         ref.current.unkey(key, handler)
       })
     }
