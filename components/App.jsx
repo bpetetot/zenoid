@@ -17,12 +17,7 @@ screen.key(['escape', 'q', 'C-c'], () => process.exit(0))
 const App = () => {
   const [started, setStarted] = useState(false)
   return (
-    <box
-      width="100%"
-      height="100%"
-      border={{ type: 'line' }}
-      style={{ border: { fg: 'grey' } }}
-    >
+    <box width="100%" height="100%">
       {started ? (
         <Board onGameOver={() => setStarted(false)} />
       ) : (
