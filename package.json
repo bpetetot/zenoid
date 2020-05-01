@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "neo-blessed": "^0.2.0",
+    "neo-blessed-contrib": "^4.8.10",
     "react": "^16.8.0",
     "react-blessed": "^0.6.2"
   }
