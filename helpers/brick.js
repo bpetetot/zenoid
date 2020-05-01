@@ -1,7 +1,14 @@
 import * as actions from './actions'
 
-export const BREAKABLE = 'BREAKABLE'
+const BREAKABLE = 'BREAKABLE'
 export const BUMP = 'BUMP'
+
+const isType = type => brick => brick.type === type
+
+export const isBreakable = isType(BREAKABLE)
+export const isBump = isType(BUMP)
+
+export const isAlive = brick => !brick.dead
 
 export const init = (brick, id) => ({
   ...brick,

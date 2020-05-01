@@ -59,7 +59,7 @@ export const useGame = (level) => {
         game.update(newGame, actions.SET_BALL_DIRECTION_RIGHT)
       }
 
-      if (brickCollide.type === brick.BREAKABLE) {
+      if (brick.isBreakable(brickCollide)) {
         game.update(newGame, {
           type: actions.KILL_BRICK,
           payload: brickCollide.id,

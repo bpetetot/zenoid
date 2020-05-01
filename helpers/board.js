@@ -1,9 +1,9 @@
 import * as brick from './brick'
 
-export const getBricks = board => board.bricks.filter(b => !b.dead)
+export const getBricks = board => board.bricks.filter(brick.isAlive)
 
 export const getBricksRemaining = board => {
-  return getBricks(board).filter(b => b.type !== brick.BUMP)
+  return getBricks(board).filter(brick.isBreakable)
 }
 
 export const isFinished = board => {
