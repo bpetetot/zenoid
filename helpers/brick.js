@@ -5,7 +5,8 @@ export const BUMP = 'BUMP'
 
 export const init = (brick, id) => ({
   ...brick,
-  id,
+  id: brick.id || id,
+  points: brick.points || 1,
   dead: false,
   type: brick.type || BREAKABLE,
 })

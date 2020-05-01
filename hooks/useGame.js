@@ -64,7 +64,10 @@ export const useGame = (level) => {
           type: actions.KILL_BRICK,
           payload: brickCollide.id,
         })
-        game.update(newGame, actions.INCREMENT_SCORE)
+        game.update(newGame, {
+          type: actions.INCREMENT_SCORE,
+          payload: brickCollide.points,
+        })
       }
     }
 
