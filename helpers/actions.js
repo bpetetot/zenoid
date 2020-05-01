@@ -13,3 +13,13 @@ export const SET_BALL_DIRECTION_RIGHT = 'SET_BALL_DIRECTION_RIGHT'
 export const HIGHLIGHT_PLAYER_COLOR = 'HIGHLIGHT_PLAYER_COLOR'
 export const RESET_PLAYER_COLOR = 'RESET_PLAYER_COLOR'
 export const KILL_BRICK = 'KILL_BRICK'
+
+export const killBrick = id => ({
+  type: KILL_BRICK,
+  payload: id,
+})
+
+export const incrementScore = points => ({
+  type: INCREMENT_SCORE,
+  payload: points,
+})

@@ -49,14 +49,8 @@ export const useGame = (level) => {
       }
 
       if (brick.isBreakable(brickCollide)) {
-        game.update(newGame, {
-          type: actions.KILL_BRICK,
-          payload: brickCollide.id,
-        })
-        game.update(newGame, {
-          type: actions.INCREMENT_SCORE,
-          payload: brickCollide.points,
-        })
+        game.update(newGame, actions.killBrick(brickCollide.id))
+        game.update(newGame, actions.incrementScore(brickCollide.points))
       }
     }
 
