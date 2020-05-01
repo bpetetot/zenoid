@@ -6,6 +6,8 @@ import useGame from '../hooks/useGame'
 import Brick from './Brick.jsx'
 import Player from './Player.jsx'
 import Ball from './Ball.jsx'
+import Panel, { PANEL_WIDTH } from './Panel'
+import Footer, { FOOTER_HEIGHT } from './Footer'
 
 import * as board from '../helpers/board'
 
@@ -33,25 +35,42 @@ const Board = ({ onGameOver }) => {
       focused
       left="center"
       top="center"
-      width={game.board.cols + 2}
-      height={game.board.rows + 2}
-      border={{ type: 'line' }}
-      style={{ border: { fg: 'grey', bg: 'grey' } }}
+      width={game.board.cols + 2 + PANEL_WIDTH}
+      height={game.board.rows + 2 + FOOTER_HEIGHT}
     >
-      {game.over || game.win ? (
-        <box top="center" left="center" width="50%" height="50%">
-          <text top="40%" left="center" width="80%">{game.over ? 'GAME OVER.' : 'YOU WIN!'}</text>
-          <text top="50%" left="center" width="80%">{'Press <enter> to play again'}</text>
-        </box>
-      ) : (
-        <>
-          {board.getBricks(game.board).map((brick, i) => (
-            <Brick key={i} {...brick} />
-          ))}
-          <Player {...game.player} />
-          <Ball {...game.ball} />
-        </>
-      )}
+      <box
+        width={game.board.cols + 2}
+        height={game.board.rows + 2}
+        border={{ type: 'line' }}
+        style={{ border: { fg: 'grey' } }}
+      >
+        {game.over || game.win ? (
+          <box top="center" left="center" width="50%" height="50%">
+            <text top="40%" left="center" width="80%">
+              {game.over ? 'GAME OVER.' : 'YOU WIN!'}
+            </text>
+            <text top="50%" left="center" width="80%">
+              {'Press <enter> to play again'}
+            </text>
+          </box>
+        ) : (
+          <>
+            {board.getBricks(game.board).map((brick, i) => (
+              <Brick key={i} {...brick} />
+            ))}
+            <Player {...game.player} />
+            <Ball {...game.ball} />
+          </>
+        )}
+      </box>
+      <Panel
+        top={0}
+        left={game.board.cols + 2}
+        width={PANEL_WIDTH}
+        height={game.board.rows + 2}
+        game={game}
+      />
+      <Footer />
     </box>
   )
 }

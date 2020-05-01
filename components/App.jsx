@@ -9,7 +9,9 @@ const render = createBlessedRenderer(blessed)
 
 const screen = blessed.screen({
   title: 'Zenoid',
-  smartCSR: false,
+  smartCSR: true,
+  fullUnicode: true,
+  forceUnicode: true,
   debug: true,
 })
 screen.key(['escape', 'q', 'C-c'], () => process.exit(0))

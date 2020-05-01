@@ -36,7 +36,7 @@ const Splashscreen = ({ onStart }) => {
         <Lcd ref={lcd} display="ZENOID" elements={6} color={color} />
       </box>
       <text top="40%+8" left="center">
-        {text.style('Press <space> to start.', { bold: true })}
+        {text.style('Press <space> to start.', { fg: 'grey' })}
       </text>
     </box>
   )
