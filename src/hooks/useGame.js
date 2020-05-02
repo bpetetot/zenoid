@@ -25,8 +25,13 @@ export const useGame = (level) => {
       game.update(newGame, actions.SET_BALL_DIRECTION_RIGHT)
     if (ball.willBumpRight(newGame))
       game.update(newGame, actions.SET_BALL_DIRECTION_LEFT)
-    if (ball.willBumpBottom(newGame))
-      game.update(newGame, actions.GAME_OVER)
+    if (ball.willBumpBottom(newGame)) {
+      if (newGame.lives === 0) {
+        game.update(newGame, actions.GAME_OVER)
+      } else {
+        game.update(newGame, actions.LOSE_LIVE)
+      }
+    }
 
     if (ball.willBumpPlayer(newGame)) {
       game.update(newGame, actions.SET_BALL_DIRECTION_TOP)

@@ -15,6 +15,7 @@ export const HIGHLIGHT_PLAYER_COLOR = 'HIGHLIGHT_PLAYER_COLOR'
 export const RESET_PLAYER_COLOR = 'RESET_PLAYER_COLOR'
 export const KILL_BRICK = 'KILL_BRICK'
 export const START_NEXT_LEVEL = 'START_NEXT_LEVEL'
+export const LOSE_LIVE = 'LOSE_LIVE'
 
 export const killBrick = id => ({
   type: KILL_BRICK,

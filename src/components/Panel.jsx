@@ -24,7 +24,7 @@ const Panel = ({ top, left, width, height, game }) => {
         {text.style(` Level: ${game.currentLevel}`)}
       </box>
       <box top={6}>
-        {text.style(` Lives: -`)}
+        {text.style(` Lives: ${game.lives}`)}
       </box>
       <box top={8}>
         {text.style(` Score: ${game.score}`)}
