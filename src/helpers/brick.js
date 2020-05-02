@@ -1,4 +1,5 @@
 import * as actions from './actions'
+import * as modifier from './modifier'
 
 const BREAKABLE = 'BREAKABLE'
 export const BUMP = 'BUMP'
@@ -16,6 +17,7 @@ export const init = (brick, id) => ({
   points: brick.points || 1,
   dead: false,
   type: brick.type || BREAKABLE,
+  modifier: brick.modifier || modifier.NONE,
 })
 
 export const getColor = (type) => {

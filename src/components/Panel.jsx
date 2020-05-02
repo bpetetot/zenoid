@@ -2,6 +2,7 @@ import React, { memo } from 'react'
 
 import * as text from '../helpers/text'
 import * as board from '../helpers/board'
+import * as modifier from '../helpers/modifier'
 
 export const PANEL_WIDTH = 30
 
@@ -33,7 +34,7 @@ const Panel = ({ top, left, width, height, game }) => {
         {text.style(` Bricks: ${bricksRemainingCount}`)}
       </box>
       <box top={12}>
-        {text.style(` Modifier: -`)}
+        {text.style(` Modifier: ${game.modifier || '-'}`)}
       </box>
     </box>
   )

@@ -4,6 +4,7 @@ import * as actions from '../helpers/actions'
 import * as ball from '../helpers/ball'
 import * as player from '../helpers/player'
 import * as brick from '../helpers/brick'
+import * as modifier from '../helpers/modifier'
 import * as direction from '../helpers/direction'
 
 const READY='READY'
@@ -73,7 +74,7 @@ const loseLive = (game) => {
   return game
 }
 
-const updateGame = (game, action) => {
+const reducer = (game, action) => {
   switch (action.type) {
     case actions.GAME_OVER:
       return setGameOver(game)
@@ -101,7 +102,8 @@ export const update = (game, actionName) => {
   game.ball = ball.reducer(game, action)
   game.board.bricks = brick.reducer(game, action)
 
-  return updateGame(game, action)
+  modifier.reducer(game, action)
+  reducer(game, action)
 }
 
 const createAction = (action) => {
