@@ -8,6 +8,7 @@ export const PANEL_WIDTH = 30
 
 const Panel = ({ top, left, width, height, game }) => {
   const bricksRemainingCount = board.getBricksRemaining(game.board).length
+  const currentModifier = modifier.getModifier(game.modifier)
 
   return (
     <box
@@ -34,7 +35,7 @@ const Panel = ({ top, left, width, height, game }) => {
         {text.style(` Bricks: ${bricksRemainingCount}`)}
       </box>
       <box top={12}>
-        {text.style(` Modifier: ${game.modifier || '-'}`)}
+        {text.style(` Modifier: ${currentModifier ? currentModifier.label : '-'}`)}
       </box>
     </box>
   )

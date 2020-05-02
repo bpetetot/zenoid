@@ -7,6 +7,10 @@ import * as brick from '../helpers/brick'
 import * as modifier from '../helpers/modifier'
 import * as direction from '../helpers/direction'
 
+export const GAME_SPEED = 45
+export const GAME_SPEED_SLOW = 55
+export const GAME_SPEED_FAST = 33
+
 const READY='READY'
 const PLAYING='PLAYING'
 const LEVEL_WON='LEVEL_WON'
@@ -46,6 +50,8 @@ export const init = (currentLevel = 1, lives = 5) => {
     currentLevel,
     levelsCount: levels.length,
     lives,
+    speed: GAME_SPEED,
+    modifier: modifier.NONE,
     board: {
       ...level,
       bricks: level.bricks.map(brick.init),

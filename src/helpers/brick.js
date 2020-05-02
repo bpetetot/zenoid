@@ -20,8 +20,10 @@ export const init = (brick, id) => ({
   modifier: brick.modifier || modifier.NONE,
 })
 
-export const getColor = (type) => {
+export const getColor = (type, modifierName) => {
   if (type === BUMP) return 'grey'
+  const modifierColor = modifier.getColor(modifierName)
+  if (modifierColor) return modifierColor
   return 'yellow'
 }
 

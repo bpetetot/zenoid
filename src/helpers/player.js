@@ -3,6 +3,8 @@ import * as direction from './direction'
 
 const PLAYER_HEIGHT = 1
 const PLAYER_WIDTH = 10
+export const PLAYER_WIDTH_LONG = 15
+export const PLAYER_WIDTH_SHORT = 7
 
 export const init = (board) => ({
   x:  Math.floor(board.cols / 2 - PLAYER_WIDTH / 2),

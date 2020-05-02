@@ -78,7 +78,7 @@ export const useGame = (level) => {
     }
 
     setCurrentGame(newGame)
-  }, 50)
+  }, currentGame.speed)
 
   const onMoveLeft = () => {
     const newGame = { ...currentGame }
