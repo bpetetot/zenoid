@@ -1,5 +1,7 @@
 FROM node:14.1.0-alpine AS builder
 
+USER node
+
 WORKDIR /usr/src/app
 
 COPY package.json yarn.lock ./
@@ -13,6 +15,8 @@ COPY src/ src/
 RUN yarn build
 
 FROM node:14.1.0-alpine
+
+USER node
 
 WORKDIR /usr/src/app
 
