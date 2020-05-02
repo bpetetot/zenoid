@@ -41,10 +41,14 @@ const incrementScore = (game, step = 1) => {
   return game
 }
 
+let CURRENT_GAME
+
+export const get = () => CURRENT_GAME
+
 export const init = (currentLevel = 1, lives = 5) => {
   const level = levels[currentLevel - 1]
   const initPlayer = player.init(level)
-  return ({
+  CURRENT_GAME = {
     status: READY,
     score: 0,
     currentLevel,
@@ -58,7 +62,8 @@ export const init = (currentLevel = 1, lives = 5) => {
     },
     player: initPlayer,
     ball: ball.init(initPlayer),
-  })
+  }
+  return CURRENT_GAME
 }
 
 const nextLevel = (game) => {
@@ -101,15 +106,22 @@ const reducer = (game, action) => {
   }
 }
 
-export const update = (game, actionName) => {
+export const dispatch = (actionName) => {
   const action = createAction(actionName)
 
-  game.player = player.reducer(game, action)
-  game.ball = ball.reducer(game, action)
-  game.board.bricks = brick.reducer(game, action)
+  const newGame = {
+    ...reducer(CURRENT_GAME, action),
+    board: {
+      ...CURRENT_GAME.board,
+      bricks: brick.reducer(CURRENT_GAME, action),
+    },
+    player: player.reducer(CURRENT_GAME, action),
+    ball: ball.reducer(CURRENT_GAME, action),
+  }
 
-  modifier.reducer(game, action)
-  reducer(game, action)
+  modifier.reducer(newGame, action)
+
+  CURRENT_GAME = newGame
 }
 
 const createAction = (action) => {

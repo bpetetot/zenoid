@@ -9,113 +9,109 @@ import * as brick from '../helpers/brick'
 import * as board from '../helpers/board'
 import * as collision from '../helpers/collision'
 
-export const useGame = (level) => {
+export const useGame = () => {
   const [currentGame, setCurrentGame] = useState(game.init())
 
+  const updateGame = () => setCurrentGame(game.get())
+
   useInterval(() => {
-    if (!game.isReady(currentGame) && !game.isPlaying(currentGame)) {
+    if (!game.isPlaying(currentGame)) {
       return
     }
 
-    const newGame = { ...currentGame }
-
-    if (ball.willBumpTop(newGame))
-      game.update(newGame, actions.SET_BALL_DIRECTION_BOTTOM)
-    if (ball.willBumpLeft(newGame))
-      game.update(newGame, actions.SET_BALL_DIRECTION_RIGHT)
-    if (ball.willBumpRight(newGame))
-      game.update(newGame, actions.SET_BALL_DIRECTION_LEFT)
-    if (ball.willBumpBottom(newGame)) {
-      if (newGame.lives === 0) {
-        game.update(newGame, actions.GAME_OVER)
+    if (ball.willBumpTop(currentGame))
+      game.dispatch(actions.SET_BALL_DIRECTION_BOTTOM)
+    if (ball.willBumpLeft(currentGame))
+      game.dispatch(actions.SET_BALL_DIRECTION_RIGHT)
+    if (ball.willBumpRight(currentGame))
+      game.dispatch(actions.SET_BALL_DIRECTION_LEFT)
+    if (ball.willBumpBottom(currentGame)) {
+      if (currentGame.lives === 0) {
+        game.dispatch(actions.GAME_OVER)
       } else {
-        game.update(newGame, actions.LOSE_LIVE)
+        game.dispatch(actions.LOSE_LIVE)
       }
     }
 
-    if (ball.willBumpPlayer(newGame)) {
-      game.update(newGame, actions.SET_BALL_DIRECTION_TOP)
-      game.update(newGame, actions.HIGHLIGHT_PLAYER_COLOR)
+    if (ball.willBumpPlayer(currentGame)) {
+      game.dispatch(actions.SET_BALL_DIRECTION_TOP)
+      game.dispatch(actions.HIGHLIGHT_PLAYER_COLOR)
     } else {
-      game.update(newGame, actions.RESET_PLAYER_COLOR)
+      game.dispatch(actions.RESET_PLAYER_COLOR)
     }
 
-    const brickCollide = ball.findBrickCollision(newGame)
+    const brickCollide = ball.findBrickCollision(currentGame)
     if (brickCollide) {
-      const { ball } = newGame
+      const { ball } = currentGame
       if (collision.fromBottom(ball, brickCollide)) {
-        game.update(newGame, actions.SET_BALL_DIRECTION_BOTTOM)
+        game.dispatch(actions.SET_BALL_DIRECTION_BOTTOM)
       }
       if (collision.fromTop(ball, brickCollide)) {
-        game.update(newGame, actions.SET_BALL_DIRECTION_TOP)
+        game.dispatch(actions.SET_BALL_DIRECTION_TOP)
       }
       if (collision.fromLeft(ball, brickCollide)) {
-        game.update(newGame, actions.SET_BALL_DIRECTION_LEFT)
+        game.dispatch(actions.SET_BALL_DIRECTION_LEFT)
       }
       if (collision.fromRight(ball, brickCollide)) {
-        game.update(newGame, actions.SET_BALL_DIRECTION_RIGHT)
+        game.dispatch(actions.SET_BALL_DIRECTION_RIGHT)
       }
 
       if (brick.isBreakable(brickCollide)) {
-        game.update(newGame, actions.killBrick(brickCollide.id))
-        game.update(newGame, actions.applyModifier(brickCollide.modifier))
-        game.update(newGame, actions.incrementScore(brickCollide.points))
+        game.dispatch(actions.killBrick(brickCollide.id))
+        game.dispatch(actions.applyModifier(brickCollide.modifier))
+        game.dispatch(actions.incrementScore(brickCollide.points))
       }
     }
 
-    if (board.isFinished(newGame.board)) {
-      const nextLevel = newGame.currentLevel + 1
-      if (nextLevel <= newGame.levelsCount) {
-        game.update(newGame, actions.LEVEL_WON)
+    if (board.isFinished(currentGame.board)) {
+      const nextLevel = currentGame.currentLevel + 1
+      if (nextLevel <= currentGame.levelsCount) {
+        game.dispatch(actions.LEVEL_WON)
       } else {
-        game.update(newGame, actions.GAME_WON)
+        game.dispatch(actions.GAME_WON)
       }
     }
 
-    if (game.isPlaying(newGame)) {
-      game.update(newGame, actions.MOVE_BALL)
-      game.update(newGame, actions.MOVE_PLAYER)
+    if (game.isPlaying(currentGame)) {
+      game.dispatch(actions.MOVE_BALL)
+      game.dispatch(actions.MOVE_PLAYER)
     }
 
-    setCurrentGame(newGame)
+    updateGame()
   }, currentGame.speed)
 
   const onMoveLeft = () => {
-    const newGame = { ...currentGame }
-    if (!player.isMovingLeft(newGame.player)) {
-      if (game.isReady(newGame)) {
-        game.update(newGame, actions.SET_BALL_DIRECTION_LEFT)
-        game.update(newGame, actions.PLAY_GAME)
+    if (!player.isMovingLeft(currentGame)) {
+      if (game.isReady(currentGame)) {
+        game.dispatch(actions.SET_BALL_DIRECTION_LEFT)
+        game.dispatch(actions.PLAY_GAME)
       }
-      game.update(newGame, actions.SET_PLAYER_DIRECTION_LEFT)
-      setCurrentGame(newGame)
+      game.dispatch(actions.SET_PLAYER_DIRECTION_LEFT)
+      updateGame()
     }
   }
 
   const onMoveRight = () => {
-    const newGame = { ...currentGame }
-    if (!player.isMovingRight(newGame.player)) {
-      if (game.isReady(newGame)) {
-        game.update(newGame, actions.SET_BALL_DIRECTION_RIGHT)
-        game.update(newGame, actions.PLAY_GAME)
+    if (!player.isMovingRight(currentGame.player)) {
+      if (game.isReady(currentGame)) {
+        game.dispatch(actions.SET_BALL_DIRECTION_RIGHT)
+        game.dispatch(actions.PLAY_GAME)
       } 
-      game.update(newGame, actions.SET_PLAYER_DIRECTION_RIGHT)
-      setCurrentGame(newGame)
+      game.dispatch(actions.SET_PLAYER_DIRECTION_RIGHT)
+      updateGame()
     }
   }
 
   const onStart = () => {
-    const newGame = { ...currentGame }
-    if (game.isReady(newGame)) {
-      game.update(newGame, actions.PLAY_GAME)
-      setCurrentGame(newGame)
+    if (game.isReady(currentGame)) {
+      game.dispatch(actions.PLAY_GAME)
+      updateGame()
     }
   }
 
   const startNextLevel = () => {
-    const newGame = { ...currentGame }
-    game.update(newGame, actions.START_NEXT_LEVEL)
-    setCurrentGame(newGame)
+    game.dispatch(actions.START_NEXT_LEVEL)
+    updateGame()
   }
 
   return { currentGame, onMoveLeft, onMoveRight, onStart, startNextLevel }
