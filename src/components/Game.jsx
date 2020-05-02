@@ -1,7 +1,7 @@
 import React from 'react'
-import Brick from './Brick.jsx'
-import Player from './Player.jsx'
-import Ball from './Ball.jsx'
+import Brick from './Brick'
+import Player from './Player'
+import Ball from './Ball'
 import * as board from '../helpers/board'
 import useKeys from '../hooks/useKeys'
 

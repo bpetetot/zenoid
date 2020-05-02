@@ -2,7 +2,8 @@
   "name": "zenoid",
   "version": "0.1.0",
   "scripts": {
-    "start": "node index.js",
+    "build": "babel src -d dist",
+    "start": "yarn build && node dist/index.js",
     "test": "jest"
   },
   "devDependencies": {
