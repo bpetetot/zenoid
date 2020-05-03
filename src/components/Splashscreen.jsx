@@ -1,9 +1,9 @@
 import React, { memo, useState, useRef } from 'react'
 
-import { Lcd } from './Contrib'
 import useInterval from '../hooks/useInterval'
 import useKeys from '../hooks/useKeys'
-import * as text from '../helpers/text'
+import { Lcd } from './Contrib'
+import Text from './Text'
 
 const colors = ['red', 'green', 'blue']
 
@@ -22,16 +22,12 @@ const Splashscreen = ({ onStart }) => {
   }, 150)
 
   return (
-    <box
-      ref={keysRef}
-      width="100%"
-      height="100%"
-    >
+    <box ref={keysRef} width="100%" height="100%">
       <box width={60} height={8} top="40%" left="center">
         <Lcd ref={lcd} display="ZENOID" elements={6} color={color} />
       </box>
       <text top="40%+8" left="center">
-        {text.style('Press <space> to start.', { fg: 'grey' })}
+        <Text fg="grey">{'Press <space> to start.'}</Text>
       </text>
     </box>
   )

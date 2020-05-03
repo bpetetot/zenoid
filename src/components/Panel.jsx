@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 
-import * as text from '../helpers/text'
 import * as levelHelpers from '../zenoid/models/level'
+import Text from './Text'
 
 export const PANEL_WIDTH = 30
 
@@ -18,23 +18,15 @@ const Panel = ({ top, left, width, height, game: zenoid }) => {
       style={{ border: { fg: 'grey' } }}
     >
       <box top={1} left="center">
-        {text.style(` ZENOID v0.1`, { bold: true, fg: 'green' })}
+        <Text fg="green" bold>
+          {' ZENOID v0.1'}
+        </Text>
       </box>
-      <box top={4}>
-        {text.style(` Level: ${zenoid.game.currentLevel}`)}
-      </box>
-      <box top={6}>
-        {text.style(` Lives: ${zenoid.game.lives}`)}
-      </box>
-      <box top={8}>
-        {text.style(` Score: ${zenoid.game.score}`)}
-      </box>
-      <box top={10}>
-        {text.style(` Bricks: ${bricksCount}`)}
-      </box>
-      <box top={12}>
-        {text.style(` Modifier: ${zenoid.modifier || '-'}`)}
-      </box>
+      <box top={4}>{` Level: ${zenoid.game.currentLevel}`}</box>
+      <box top={6}>{` Lives: ${zenoid.game.lives}`}</box>
+      <box top={8}>{` Score: ${zenoid.game.score}`}</box>
+      <box top={10}>{` Bricks: ${bricksCount}`}</box>
+      <box top={12}>{` Modifier: ${zenoid.modifier || '-'}`}</box>
     </box>
   )
 }

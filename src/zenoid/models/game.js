@@ -1,4 +1,4 @@
-import levels from '../../levels'
+import levels from '../levels'
 
 // helpers
 export const READY = 'READY'

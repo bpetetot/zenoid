@@ -1,4 +1,4 @@
-import * as direction from '../../helpers/direction'
+import * as direction from '../direction'
 import * as gameHelpers from './game'
 
 const PLAYER_HEIGHT = 1

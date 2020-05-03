@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 
 import useKeys from '../hooks/useKeys'
-import * as text from '../helpers/text'
+import Text from './Text'
 
 const GameWon = ({ onRestart }) => {
   const keysRef = useKeys({ space: onRestart })
@@ -17,10 +17,10 @@ const GameWon = ({ onRestart }) => {
       style={{ border: { fg: 'green' } }}
     >
       <text top="45%" left="center">
-        {text.style('YOU WIN.', { fg: 'green', bold: true })}
+        <Text fg="green" bold>YOU WIN.</Text>
       </text>
       <text top="55%" left="center">
-        {text.style('Press <space> to play again.', { fg: 'grey' })}
+        <Text fg="grey">{'Press <space> to play again.'}</Text>
       </text>
     </box>
   )

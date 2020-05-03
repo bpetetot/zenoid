@@ -1,5 +1,5 @@
-import { BUMP } from '../helpers/brick'
-import { SHORT_BAR, LONG_BAR, FAST_GAME, SLOW_GAME } from '../helpers/modifier'
+import { SHORT_BAR, LONG_BAR, FAST_GAME, SLOW_GAME } from '../models/modifier'
+import { BUMP } from '../models/level'
 
 export default {
   cols: 80,

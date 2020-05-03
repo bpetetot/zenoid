@@ -1,4 +1,4 @@
-import levels from '../../levels'
+import levels from '../levels'
 import * as gameConstants from './game'
 
 export default {
@@ -34,7 +34,7 @@ export default {
 
 // helpers
 const BREAKABLE = 'BREAKABLE'
-const BUMP = 'BUMP'
+export const BUMP = 'BUMP'
 
 const getColor = (type) => {
   if (type === BUMP) return 'grey'

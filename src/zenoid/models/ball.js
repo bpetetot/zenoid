@@ -1,5 +1,5 @@
-import * as direction from '../../helpers/direction'
-import * as collision from '../../helpers/collision'
+import * as direction from '../direction'
+import * as collision from '../collision'
 import * as levelHelpers from './level'
 
 const BALL_HEIGHT = 1
@@ -99,7 +99,7 @@ const getBBox = ball => ({
   height: ball.height,
 })
 
-const willBumpPlayer = (ball, player) => {
+export const willBumpPlayer = (ball, player) => {
   const willCollideWithBall = collision.willCollide(getBBox(ball))
   return willCollideWithBall(player)
 }
