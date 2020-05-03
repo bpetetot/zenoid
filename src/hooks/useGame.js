@@ -1,23 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import useInterval from './useInterval'
 
-import * as game from '../helpers/game'
+import { initZenoid } from '../zenoid/store'
 
 export const useGame = () => {
-  const [currentGame, setCurrentGame] = useState(game.get())
+  const zenoid = useRef()
+  const [currentGame, setCurrentGame] = useState()
+
+  const initialize = () => {
+    zenoid.current = initZenoid()
+    setCurrentGame(zenoid.current.getState())
+  }
+
+  useEffect(() => initialize(), [])
 
   useInterval(() => {
-    const updatedGame = game.update()
-    setCurrentGame(updatedGame)
-  }, currentGame.speed)
+    if (!zenoid.current && !currentGame) return
+    zenoid.current.dispatch.game.update()
+    setCurrentGame(zenoid.current.getState())
+  }, 100)
 
-  return { 
-    currentGame,
-    onMoveLeft: game.moveLeft,
-    onMoveRight: game.moveRight,
-    onStart: game.start,
-    onReset: game.reset,
-    onStartNextLevel: game.startNextLevel,
+  return {
+    zenoid: currentGame,
+    onMoveLeft: zenoid.current && zenoid.current.dispatch.player.moveLeft,
+    onMoveRight: zenoid.current && zenoid.current.dispatch.player.moveRight,
+    onStartNextLevel: zenoid.current && zenoid.current.dispatch.game.startNextLevel,
   }
 }
 

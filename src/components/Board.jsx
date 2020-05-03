@@ -13,17 +13,15 @@ import * as board from '../helpers/board'
 import * as game from '../helpers/game'
 
 const Board = ({ goToSplashscreen }) => {
-  const { currentGame, onReset, onStartNextLevel, ...keyHandlers } = useGame()
+  const { zenoid, onReset, onStartNextLevel, ...keyHandlers } = useGame()
 
-  const boardWidth = board.getWidth(currentGame.board)
-  const boardHeight = board.getHeight(currentGame.board)
-
-  const displayGame = game.isReady(currentGame) || game.isPlaying(currentGame)
-
-  const onRestart = () => {
-    onReset()
-    goToSplashscreen()
-  }
+  
+  if (!zenoid) return
+  
+  const boardWidth = zenoid.level.cols + 2
+  const boardHeight = zenoid.level.rows + 2
+  const { status } = zenoid.game
+  const displayGame = status === 'READY' ||  status === 'PLAYING'
 
   return (
     <box
@@ -33,17 +31,19 @@ const Board = ({ goToSplashscreen }) => {
       height={boardHeight + FOOTER_HEIGHT}
     >
       <box width={boardWidth} height={boardHeight}>
-        {game.isOver(currentGame) && <GameOver onRestart={onRestart} />}
-        {game.isWon(currentGame) && <GameWon onRestart={onRestart} />}
-        {game.isLevelWon(currentGame) && <NextLevel startNextLevel={onStartNextLevel} />}
-        {displayGame && <Game game={currentGame} {...keyHandlers} />}
+        {status === 'GAME_OVER' && <GameOver onRestart={goToSplashscreen} />}
+        {status === 'GAME_WON' && <GameWon onRestart={goToSplashscreen} />}
+        {status === 'NEXT_LEVEL' && (
+          <NextLevel startNextLevel={onStartNextLevel} />
+        )}
+        {displayGame && <Game game={zenoid} {...keyHandlers} />}
       </box>
       <Panel
         top={0}
         left={boardWidth}
         width={PANEL_WIDTH}
         height={boardHeight}
-        game={currentGame}
+        game={zenoid}
       />
       <Footer />
     </box>
