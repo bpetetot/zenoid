@@ -4,7 +4,7 @@ import Board from './Board'
 import Splashscreen from './Splashscreen'
 
 const App = () => {
-  const [started, setStarted] = useState(true)
+  const [started, setStarted] = useState(false)
   return (
     <box width="100%" height="100%">
       {started ? (

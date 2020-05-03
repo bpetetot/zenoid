@@ -1,9 +1,9 @@
 import * as direction from '../direction'
 import * as collision from '../collision'
-import * as levelHelpers from './level'
+import { isBreakable } from '../level/helpers'
 
-const BALL_HEIGHT = 1
-const BALL_WIDTH = 2
+import { BALL_WIDTH, BALL_HEIGHT } from './constants'
+import * as helpers from './helpers'
 
 export default {
   state: {
@@ -31,81 +31,54 @@ export default {
     moveTop: (state) => direction.setTop(state),
     moveBottom: (state) => direction.setBottom(state),
     moveToPlayer: (state, player) => {
-      state.x = player.x + Math.floor((player.width / 2) - (BALL_WIDTH / 2))
+      state.x = player.x + Math.floor(player.width / 2 - BALL_WIDTH / 2)
       state.y = player.y - BALL_HEIGHT
       state.dy = direction.TOP
       return state
-    }
+    },
   },
   effects: (dispatch) => ({
     update: (_payload, { ball, level, player }) => {
-      if (floorIsLava(ball, level)) {
+      if (helpers.floorIsLava(ball, level)) {
         dispatch.game.die()
       }
 
-      if (willBumpEdgeTop(ball, level)) {
+      if (helpers.willBumpEdgeTop(ball, level)) {
         dispatch.ball.moveBottom()
       }
 
-      if (willBumpEdgeLeft(ball, level)) {
+      if (helpers.willBumpEdgeLeft(ball, level)) {
         dispatch.ball.moveRight()
-      } else if (willBumpEdgeRight(ball, level)) {
+      } else if (helpers.willBumpEdgeRight(ball, level)) {
         dispatch.ball.moveLeft()
       }
 
-      if (willBumpPlayer(ball, player)) {
+      if (helpers.willBumpPlayer(ball, player)) {
         dispatch.ball.moveTop()
       }
 
-      const brick = findBrickCollision(ball, level)
+      const brick = helpers.findBrickCollision(ball, level)
       if (brick) {
         if (collision.fromBottom(ball, brick)) {
           dispatch.ball.moveBottom()
         } else if (collision.fromTop(ball, brick)) {
           dispatch.ball.moveTop()
         }
-      
+
         if (collision.fromLeft(ball, brick)) {
           dispatch.ball.moveLeft()
         } else if (collision.fromRight(ball, brick)) {
           dispatch.ball.moveRight()
         }
 
-        if (levelHelpers.isBreakable(brick)) {
+        if (isBreakable(brick)) {
           dispatch.level.killBrick(brick.id)
-          
+
           dispatch.modifier.apply(brick.modifier)
 
           dispatch.game.incrementScore(brick.points)
         }
       }
-    }
+    },
   }),
-}
-
-// helpers
-const willBumpEdgeTop = (ball) => ball.y + ball.dy < 0
-
-const floorIsLava = (ball, level) => ball.y + ball.height > level.rows
-
-const willBumpEdgeLeft = (ball) => ball.x + ball.dx < 0
-
-const willBumpEdgeRight = (ball, level) => ball.x + ball.dx + ball.width > level.cols
-
-const getBBox = ball => ({
-  x: ball.x + ball.dx,
-  y: ball.y + ball.dy,
-  width: ball.width,
-  height: ball.height,
-})
-
-export const willBumpPlayer = (ball, player) => {
-  const willCollideWithBall = collision.willCollide(getBBox(ball))
-  return willCollideWithBall(player)
-}
-
-const findBrickCollision = (ball, level) => {
-  const ballBBox = getBBox(ball)
-  const willCollideWithBall = collision.willCollide(ballBBox)
-  return levelHelpers.getBricks(level).find(willCollideWithBall)
 }

@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import useGame from '../hooks/useGame'
+import useZenoid from '../hooks/useZenoid'
 
 import Panel, { PANEL_WIDTH } from './Panel'
 import Footer, { FOOTER_HEIGHT } from './Footer'
@@ -10,7 +10,7 @@ import NextLevel from './NextLevel'
 import Game from './Game'
 
 const Board = ({ goToSplashscreen }) => {
-  const { zenoid, onReset, onStartNextLevel, ...keyHandlers } = useGame()
+  const { zenoid, onReset, onStartNextLevel, ...keyHandlers } = useZenoid()
   
   if (!zenoid) return
   
@@ -32,14 +32,14 @@ const Board = ({ goToSplashscreen }) => {
         {status === 'NEXT_LEVEL' && (
           <NextLevel startNextLevel={onStartNextLevel} />
         )}
-        {displayGame && <Game game={zenoid} {...keyHandlers} />}
+        {displayGame && <Game zenoid={zenoid} {...keyHandlers} />}
       </box>
       <Panel
         top={0}
         left={boardWidth}
         width={PANEL_WIDTH}
         height={boardHeight}
-        game={zenoid}
+        zenoid={zenoid}
       />
       <Footer />
     </box>

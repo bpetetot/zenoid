@@ -1,0 +1,5 @@
+export const NONE = 'NONE'
+export const LONG_BAR = 'LONG_BAR'
+export const SHORT_BAR = 'SHORT_BAR'
+export const FAST_GAME = 'FAST_GAME'
+export const SLOW_GAME = 'SLOW_GAME'

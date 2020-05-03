@@ -1,21 +1,12 @@
 import levels from '../levels'
 
-// helpers
-export const READY = 'READY'
-export const PLAYING = 'PLAYING'
-export const GAME_WON = 'GAME_WON'
-export const GAME_OVER = 'GAME_OVER'
-export const NEXT_LEVEL = 'NEXT_LEVEL'
-export const GAME_SPEED = 45
-export const GAME_SPEED_SLOW = 55
-export const GAME_SPEED_FAST = 33
-
+import { READY, PLAYING, GAME_OVER, GAME_SPEED } from './constants'
 
 export default {
   state: {
     status: READY,
     score: 0,
-    lives: 1,
+    lives: 5,
     currentLevel: 0,
     speed: GAME_SPEED,
   },
@@ -69,6 +60,6 @@ export default {
     },
     startNextLevel: () => {
       dispatch.game.init()
-    }
+    },
   }),
 }

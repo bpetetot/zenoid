@@ -1,12 +1,13 @@
 import React, { memo } from 'react'
 
-import * as levelHelpers from '../zenoid/models/level'
+import { getBricksRemaining } from '../zenoid/level/helpers'
+
 import Text from './Text'
 
 export const PANEL_WIDTH = 30
 
-const Panel = ({ top, left, width, height, game: zenoid }) => {
-  const bricksCount = levelHelpers.getBricksRemaining(zenoid.level).length
+const Panel = ({ top, left, width, height, zenoid }) => {
+  const bricksCount = getBricksRemaining(zenoid.level).length
 
   return (
     <box

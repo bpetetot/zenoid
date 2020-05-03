@@ -20,7 +20,6 @@ const NextLevel = ({ startNextLevel }) => {
         <Text fg="green" bold>
           LEVEL FINISHED, CONGRATS!
         </Text>
-        {text.style('', { fg: 'green', bold: true })}
       </text>
       <text top="55%" left="center">
         <Text fg="grey">{'Press <space> to next level.'}</Text>

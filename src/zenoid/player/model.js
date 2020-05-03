@@ -1,11 +1,7 @@
 import * as direction from '../direction'
-import * as gameHelpers from './game'
-
-const PLAYER_HEIGHT = 1
-const PLAYER_WIDTH = 10
-const PLAYER_VELOCITY = 2
-export const PLAYER_WIDTH_LONG = 15
-export const PLAYER_WIDTH_SHORT = 7
+import { READY, PLAYING } from '../game/constants'
+import { PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_VELOCITY } from './constants'
+import { isMovingLeft, isMovingRight } from './helpers'
 
 export default {
   state: {
@@ -20,6 +16,9 @@ export default {
     init: (state, level) => {
       state.x = Math.floor(level.cols / 2 - PLAYER_WIDTH / 2)
       state.y = level.rows - PLAYER_HEIGHT
+      state.dx = direction.STOP
+      state.width = PLAYER_WIDTH
+      state.height = PLAYER_HEIGHT
       return state
     },
     move: (state, level) => {
@@ -58,8 +57,8 @@ export default {
   effects: (dispatch) => ({
     moveLeft: (_payload, { game, player }) => {
       if (!isMovingLeft(player)) {
-        if (game.status === gameHelpers.READY) {
-          dispatch.game.setStatus(gameHelpers.PLAYING)
+        if (game.status === READY) {
+          dispatch.game.setStatus(PLAYING)
           dispatch.ball.moveLeft()
         }
         dispatch.player.setDirectionLeft()
@@ -67,8 +66,8 @@ export default {
     },
     moveRight: (_payload, { game, player }) => {
       if (!isMovingRight(player)) {
-        if (game.status === gameHelpers.READY) {
-          dispatch.game.setStatus(gameHelpers.PLAYING)
+        if (game.status === READY) {
+          dispatch.game.setStatus(PLAYING)
           dispatch.ball.moveRight()
         }
         dispatch.player.setDirectionRight()
@@ -76,9 +75,3 @@ export default {
     },
   }),
 }
-
-// helpers
-const isMoving = (dx) => (state) => state.dx == dx
-
-export const isMovingLeft = isMoving(direction.LEFT)
-export const isMovingRight = isMoving(direction.RIGHT)
