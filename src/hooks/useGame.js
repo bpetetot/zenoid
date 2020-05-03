@@ -5,23 +5,25 @@ import { initZenoid } from '../zenoid/store'
 
 export const useGame = () => {
   const zenoid = useRef()
-  const [currentGame, setCurrentGame] = useState()
+  const [currentZenoid, setCurrentZenoid] = useState()
 
   const initialize = () => {
     zenoid.current = initZenoid()
-    setCurrentGame(zenoid.current.getState())
+    setCurrentZenoid(zenoid.current.getState())
   }
+
+  const gameSpeed = currentZenoid ? currentZenoid.game.speed : 100
 
   useEffect(() => initialize(), [])
 
   useInterval(() => {
-    if (!zenoid.current && !currentGame) return
+    if (!zenoid.current && !currentZenoid) return
     zenoid.current.dispatch.game.update()
-    setCurrentGame(zenoid.current.getState())
-  }, 100)
+    setCurrentZenoid(zenoid.current.getState())
+  }, gameSpeed)
 
   return {
-    zenoid: currentGame,
+    zenoid: currentZenoid,
     onMoveLeft: zenoid.current && zenoid.current.dispatch.player.moveLeft,
     onMoveRight: zenoid.current && zenoid.current.dispatch.player.moveRight,
     onStartNextLevel: zenoid.current && zenoid.current.dispatch.game.startNextLevel,

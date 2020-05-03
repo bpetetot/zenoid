@@ -18,6 +18,8 @@ export default {
     init: (state, level) => {
       state.x = Math.floor(level.cols / 2 - BALL_WIDTH / 2)
       state.y = level.rows - BALL_HEIGHT - 1
+      state.dx = direction.RIGHT
+      state.dy = direction.TOP
       return state
     },
     move: (state) => {
@@ -36,11 +38,13 @@ export default {
     }
   },
   effects: (dispatch) => ({
-    update: (payload, { ball, level, player, game }) => {
+    update: (_payload, { ball, level, player }) => {
+      if (floorIsLava(ball, level)) {
+        dispatch.game.die()
+      }
+
       if (willBumpEdgeTop(ball, level)) {
         dispatch.ball.moveBottom()
-      } else if (willBumpEdgeBottom(ball, level)) {
-        dispatch.game.lose()
       }
 
       if (willBumpEdgeLeft(ball, level)) {
@@ -69,7 +73,9 @@ export default {
 
         if (levelHelpers.isBreakable(brick)) {
           dispatch.level.killBrick(brick.id)
-          // dispatch(actions.applyModifier(brick.modifier))
+          
+          dispatch.modifier.apply(brick.modifier)
+
           dispatch.game.incrementScore(brick.points)
         }
       }
@@ -80,7 +86,7 @@ export default {
 // helpers
 const willBumpEdgeTop = (ball) => ball.y + ball.dy < 0
 
-const willBumpEdgeBottom = (ball, level) => ball.y + ball.dy + ball.height > level.rows
+const floorIsLava = (ball, level) => ball.y + ball.height > level.rows
 
 const willBumpEdgeLeft = (ball) => ball.x + ball.dx < 0
 

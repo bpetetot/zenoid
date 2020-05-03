@@ -20,7 +20,7 @@ export default {
     }
   },
   effects: (dispatch) => ({
-    update: (payload, { game, level }) => {
+    update: (_payload, { game, level }) => {
       if (isFinished(level)) {
         if (game.currentLevel < levels.length) {
           dispatch.game.setStatus(gameConstants.NEXT_LEVEL)
@@ -36,13 +36,19 @@ export default {
 const BREAKABLE = 'BREAKABLE'
 const BUMP = 'BUMP'
 
+const getColor = (type) => {
+  if (type === BUMP) return 'grey'
+  return 'yellow'
+}
+
 const initBrick = (brick, id) => ({
   ...brick,
   id: brick.id || id,
   points: brick.points || 1,
   dead: false,
   type: brick.type || BREAKABLE,
-  // modifier: brick.modifier || modifier.NONE,
+  modifier: brick.modifier,
+  color: brick.color || getColor(brick.type),
 })
 
 const isType = type => brick => brick.type === type

@@ -1,14 +1,12 @@
 import React, { memo } from 'react'
 
 import * as text from '../helpers/text'
-// import * as modifier from '../helpers/modifier'
 import * as levelHelpers from '../zenoid/models/level'
 
 export const PANEL_WIDTH = 30
 
 const Panel = ({ top, left, width, height, game: zenoid }) => {
   const bricksCount = levelHelpers.getBricksRemaining(zenoid.level).length
-  // const currentModifier = modifier.getModifier(game.modifier)
 
   return (
     <box
@@ -34,9 +32,9 @@ const Panel = ({ top, left, width, height, game: zenoid }) => {
       <box top={10}>
         {text.style(` Bricks: ${bricksCount}`)}
       </box>
-      {/* <box top={12}>
-        {text.style(` Modifier: ${currentModifier ? currentModifier.label : '-'}`)}
-      </box> */}
+      <box top={12}>
+        {text.style(` Modifier: ${zenoid.modifier || '-'}`)}
+      </box>
     </box>
   )
 }

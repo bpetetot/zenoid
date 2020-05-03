@@ -9,12 +9,8 @@ import GameWon from './GameWon'
 import NextLevel from './NextLevel'
 import Game from './Game'
 
-import * as board from '../helpers/board'
-import * as game from '../helpers/game'
-
 const Board = ({ goToSplashscreen }) => {
   const { zenoid, onReset, onStartNextLevel, ...keyHandlers } = useGame()
-
   
   if (!zenoid) return
   

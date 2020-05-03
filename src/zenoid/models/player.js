@@ -4,6 +4,8 @@ import * as gameHelpers from './game'
 const PLAYER_HEIGHT = 1
 const PLAYER_WIDTH = 10
 const PLAYER_VELOCITY = 2
+export const PLAYER_WIDTH_LONG = 15
+export const PLAYER_WIDTH_SHORT = 7
 
 export default {
   state: {
@@ -48,9 +50,13 @@ export default {
     setDirectionLeft: (state) => direction.setLeft(state),
     setDirectionRight: (state) => direction.setRight(state),
     stop: (state) => direction.setStopX(state),
+    setWidth: (state, width) => {
+      state.width = width
+      return state
+    },
   },
   effects: (dispatch) => ({
-    moveLeft: (payload, { game, player }) => {
+    moveLeft: (_payload, { game, player }) => {
       if (!isMovingLeft(player)) {
         if (game.status === gameHelpers.READY) {
           dispatch.game.setStatus(gameHelpers.PLAYING)
@@ -59,7 +65,7 @@ export default {
         dispatch.player.setDirectionLeft()
       }
     },
-    moveRight: (payload, { game, player }) => {
+    moveRight: (_payload, { game, player }) => {
       if (!isMovingRight(player)) {
         if (game.status === gameHelpers.READY) {
           dispatch.game.setStatus(gameHelpers.PLAYING)
