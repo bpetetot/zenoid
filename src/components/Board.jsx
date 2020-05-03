@@ -12,13 +12,18 @@ import Game from './Game'
 import * as board from '../helpers/board'
 import * as game from '../helpers/game'
 
-const Board = ({ onRestart }) => {
-  const { currentGame, startNextLevel, ...keyHandlers } = useGame()
+const Board = ({ goToSplashscreen }) => {
+  const { currentGame, onReset, onStartNextLevel, ...keyHandlers } = useGame()
 
   const boardWidth = board.getWidth(currentGame.board)
   const boardHeight = board.getHeight(currentGame.board)
 
   const displayGame = game.isReady(currentGame) || game.isPlaying(currentGame)
+
+  const onRestart = () => {
+    onReset()
+    goToSplashscreen()
+  }
 
   return (
     <box
@@ -30,7 +35,7 @@ const Board = ({ onRestart }) => {
       <box width={boardWidth} height={boardHeight}>
         {game.isOver(currentGame) && <GameOver onRestart={onRestart} />}
         {game.isWon(currentGame) && <GameWon onRestart={onRestart} />}
-        {game.isLevelWon(currentGame) && <NextLevel startNextLevel={startNextLevel} />}
+        {game.isLevelWon(currentGame) && <NextLevel startNextLevel={onStartNextLevel} />}
         {displayGame && <Game game={currentGame} {...keyHandlers} />}
       </box>
       <Panel

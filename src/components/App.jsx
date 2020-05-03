@@ -8,7 +8,7 @@ const App = () => {
   return (
     <box width="100%" height="100%">
       {started ? (
-        <Board onRestart={() => setStarted(false)} />
+        <Board goToSplashscreen={() => setStarted(false)} />
       ) : (
         <Splashscreen onStart={() => setStarted(true)} />
       )}

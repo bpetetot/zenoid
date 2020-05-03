@@ -1,11 +1,13 @@
 import levels from '../levels'
 
-import * as actions from '../helpers/actions'
-import * as ball from '../helpers/ball'
-import * as player from '../helpers/player'
-import * as brick from '../helpers/brick'
-import * as modifier from '../helpers/modifier'
-import * as direction from '../helpers/direction'
+import * as actions from './actions'
+import * as ball from './ball'
+import * as player from './player'
+import * as brick from './brick'
+import * as board from './board'
+import * as collision from './collision'
+import * as modifier from './modifier'
+import * as direction from './direction'
 
 export const GAME_SPEED = 45
 export const GAME_SPEED_SLOW = 55
@@ -25,27 +27,26 @@ export const isLevelWon = isStatus(LEVEL_WON)
 export const isWon = isStatus(WON)
 export const isReady = isStatus(READY)
 
-const setGameStatus = status => game => {
-  game.status = status
-  return game
-}
+const setGameStatus = status => game => ({ ...game, status })
 
-const setReady = setGameStatus(READY)
 const setLevelWon = setGameStatus(LEVEL_WON)
 const setGameWon = setGameStatus(WON)
 const setGameOver = setGameStatus(OVER)
 const setGamePlaying = setGameStatus(PLAYING)
 
-const incrementScore = (game, step = 1) => {
-  game.score = game.score + step
-  return game
-}
+const incrementScore = (game, step = 1) => ({
+  ...game,
+  score: game.score + step,
+})
 
 let CURRENT_GAME
 
-export const get = () => CURRENT_GAME
+export const get = () => {
+  if (!CURRENT_GAME) return reset()
+  return CURRENT_GAME
+}
 
-export const init = (currentLevel = 1, lives = 5) => {
+export const reset = (currentLevel = 1) => {
   const level = levels[currentLevel - 1]
   const initPlayer = player.init(level)
   CURRENT_GAME = {
@@ -53,7 +54,7 @@ export const init = (currentLevel = 1, lives = 5) => {
     score: 0,
     currentLevel,
     levelsCount: levels.length,
-    lives,
+    lives: 5,
     speed: GAME_SPEED,
     modifier: modifier.NONE,
     board: {
@@ -66,23 +67,22 @@ export const init = (currentLevel = 1, lives = 5) => {
   return CURRENT_GAME
 }
 
-const nextLevel = (game) => {
-  const newGame = init(game.currentLevel + 1)
-  Object.keys(newGame).forEach(key => {
-    if (key !== 'score' && key !== 'lives') {
-      game[key] = newGame[key]
-    }
-  })
-  setReady(game)
-  return game
-}
+const nextLevel = (game) => ({
+  ...reset(game.currentLevel + 1),
+  status: READY,
+  score: game.score,
+  lives: game.lives,
+})
 
 const loseLive = (game) => {
-  game.lives = game.lives - 1
-  game.player = direction.setStopX(game.player)
-  game.ball = ball.init(game.player)
-  setReady(game)
-  return game
+  const newPlayer = direction.setStopX(game.player)
+  return {
+    ...game,
+    status: READY,
+    lives: game.lives - 1,
+    player: newPlayer,
+    ball: ball.init(newPlayer),
+  }
 }
 
 const reducer = (game, action) => {
@@ -106,22 +106,13 @@ const reducer = (game, action) => {
   }
 }
 
-export const dispatch = (actionName) => {
+const dispatch = (actionName) => {
   const action = createAction(actionName)
-
-  const newGame = {
-    ...reducer(CURRENT_GAME, action),
-    board: {
-      ...CURRENT_GAME.board,
-      bricks: brick.reducer(CURRENT_GAME, action),
-    },
-    player: player.reducer(CURRENT_GAME, action),
-    ball: ball.reducer(CURRENT_GAME, action),
-  }
-
-  modifier.reducer(newGame, action)
-
-  CURRENT_GAME = newGame
+  CURRENT_GAME = { ...CURRENT_GAME, ...reducer(CURRENT_GAME, action) }
+  CURRENT_GAME = { ...CURRENT_GAME, ...modifier.reducer(CURRENT_GAME, action) }
+  CURRENT_GAME = { ...CURRENT_GAME, board: { ...CURRENT_GAME.board, bricks: brick.reducer(CURRENT_GAME, action) } }
+  CURRENT_GAME = { ...CURRENT_GAME, player: player.reducer(CURRENT_GAME, action) } 
+  CURRENT_GAME = { ...CURRENT_GAME, ball: ball.reducer(CURRENT_GAME, action) }
 }
 
 const createAction = (action) => {
@@ -132,4 +123,99 @@ const createAction = (action) => {
     return { type: action }
   }
   return action
+}
+
+export const update = () => {
+  if (!isPlaying(CURRENT_GAME)) {
+    return CURRENT_GAME
+  }
+  if (ball.willBumpTop(CURRENT_GAME))
+    dispatch(actions.SET_BALL_DIRECTION_BOTTOM)
+  if (ball.willBumpLeft(CURRENT_GAME))
+    dispatch(actions.SET_BALL_DIRECTION_RIGHT)
+  if (ball.willBumpRight(CURRENT_GAME))
+    dispatch(actions.SET_BALL_DIRECTION_LEFT)
+  if (ball.willBumpBottom(CURRENT_GAME)) {
+    if (CURRENT_GAME.lives === 0) {
+      dispatch(actions.GAME_OVER)
+    } else {
+      dispatch(actions.LOSE_LIVE)
+    }
+  }
+
+  if (ball.willBumpPlayer(CURRENT_GAME)) {
+    dispatch(actions.SET_BALL_DIRECTION_TOP)
+    dispatch(actions.HIGHLIGHT_PLAYER_COLOR)
+  } else {
+    dispatch(actions.RESET_PLAYER_COLOR)
+  }
+
+  const brickCollide = ball.findBrickCollision(CURRENT_GAME)
+  if (brickCollide) {
+    const { ball } = CURRENT_GAME
+    if (collision.fromBottom(ball, brickCollide)) {
+      dispatch(actions.SET_BALL_DIRECTION_BOTTOM)
+    }
+    if (collision.fromTop(ball, brickCollide)) {
+      dispatch(actions.SET_BALL_DIRECTION_TOP)
+    }
+    if (collision.fromLeft(ball, brickCollide)) {
+      dispatch(actions.SET_BALL_DIRECTION_LEFT)
+    }
+    if (collision.fromRight(ball, brickCollide)) {
+      dispatch(actions.SET_BALL_DIRECTION_RIGHT)
+    }
+
+    if (brick.isBreakable(brickCollide)) {
+      dispatch(actions.killBrick(brickCollide.id))
+      dispatch(actions.applyModifier(brickCollide.modifier))
+      dispatch(actions.incrementScore(brickCollide.points))
+    }
+  }
+
+  if (board.isFinished(CURRENT_GAME.board)) {
+    const nextLevel = CURRENT_GAME.currentLevel + 1
+    if (nextLevel <= CURRENT_GAME.levelsCount) {
+      dispatch(actions.LEVEL_WON)
+    } else {
+      dispatch(actions.GAME_WON)
+    }
+  }
+
+  if (isPlaying(CURRENT_GAME)) {
+    dispatch(actions.MOVE_BALL)
+    dispatch(actions.MOVE_PLAYER)
+  }
+
+  return CURRENT_GAME
+}
+
+export const moveLeft = () => {
+  if (!player.isMovingLeft(CURRENT_GAME)) {
+    if (isReady(CURRENT_GAME)) {
+      dispatch(actions.PLAY_GAME)
+      dispatch(actions.SET_BALL_DIRECTION_LEFT)
+    }
+    dispatch(actions.SET_PLAYER_DIRECTION_LEFT)
+  }
+}
+
+export const moveRight = () => {
+  if (!player.isMovingRight(CURRENT_GAME.player)) {
+    if (isReady(CURRENT_GAME)) {
+      dispatch(actions.PLAY_GAME)
+      dispatch(actions.SET_BALL_DIRECTION_RIGHT)
+    }
+    dispatch(actions.SET_PLAYER_DIRECTION_RIGHT)
+  }
+}
+
+export const start = () => {
+  if (isReady(CURRENT_GAME)) {
+    dispatch(actions.PLAY_GAME)
+  }
+}
+
+export const startNextLevel = () => {
+  dispatch(actions.START_NEXT_LEVEL)
 }

@@ -16,33 +16,47 @@ const modifiers = [
     name: LONG_BAR,
     label: 'Long bar',
     color: BONUS_COLOR,
-    modify: (game) => {
-      game.player.width = player.PLAYER_WIDTH_LONG
-    },
+    modify: (game) => ({
+      ...game,
+      modifier: LONG_BAR,
+      player: {
+        ...game.player,
+        width: player.PLAYER_WIDTH_LONG,
+      },
+    }),
   },
   {
     name: SHORT_BAR,
     label: 'Short bar',
     color: MALUS_COLOR,
-    modify: (game) => {
-      game.player.width = player.PLAYER_WIDTH_SHORT
-    },
+    modify: (game) => ({
+      ...game,
+      modifier: SHORT_BAR,
+      player: {
+        ...game.player,
+        width: player.PLAYER_WIDTH_SHORT,
+      },
+    }),
   },
   {
     name: FAST_GAME,
     label: 'Fast game',
     color: MALUS_COLOR,
-    modify: (game) => {
-      game.speed = gameHelper.GAME_SPEED_FAST
-    },
+    modify: (game) => ({
+      ...game,
+      modifier: FAST_GAME,
+      speed: gameHelper.GAME_SPEED_FAST,
+    }),
   },
   {
     name: SLOW_GAME,
     label: 'Slow game',
     color: BONUS_COLOR,
-    modify: (game) => {
-      game.speed = gameHelper.GAME_SPEED_SLOW
-    },
+    modify: (game) => ({
+      ...game,
+      modifier: SLOW_GAME,
+      speed: gameHelper.GAME_SPEED_SLOW,
+    }),
   },
 ]
 
@@ -54,13 +68,12 @@ export const getColor = (name) => {
 }
 
 const apply = (game, name) => {
-  if (!name || name === NONE) return
-  game.modifier = name
+  if (!name || name === NONE) return game
 
   const modifier = getModifier(name)
-  if (!modifier) return
+  if (!modifier) return game
 
-  modifier.modify(game)
+  return modifier.modify(game, name)
 }
 
 export const reducer = (state, action) => {
