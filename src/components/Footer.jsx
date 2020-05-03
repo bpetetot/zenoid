@@ -1,6 +1,5 @@
 import React, { memo } from 'react'
-
-import * as text from '../helpers/text'
+import Text from './Text'
 
 export const FOOTER_HEIGHT = 1
 
@@ -8,10 +7,10 @@ const Footer = () => {
   return (
     <box bottom={0} width="100%" height={FOOTER_HEIGHT}>
       <box left={1} width="50%">
-        {text.style('Press ← and → to move the player.', { fg: 'grey' })}
+        <Text fg="grey">Press ← and → to move the player.</Text>
       </box>
       <box right={0} width={19}>
-        {text.style('by Charlyx and Ben', { fg: 'grey' })}
+        <Text fg="grey">by Charlyx and Ben</Text>
       </box>
     </box>
   )

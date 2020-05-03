@@ -1,5 +1,3 @@
-import {BUMP} from '../helpers/brick'
-
 export default {
 	cols: 80,
   rows: 24,

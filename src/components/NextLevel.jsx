@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 
 import useKeys from '../hooks/useKeys'
-import * as text from '../helpers/text'
+import Text from './Text'
 
 const NextLevel = ({ startNextLevel }) => {
   const keysRef = useKeys({ space: startNextLevel })
@@ -17,10 +17,12 @@ const NextLevel = ({ startNextLevel }) => {
       style={{ border: { fg: 'green' } }}
     >
       <text top="45%" left="center">
-        {text.style('LEVEL FINISHED, CONGRATS!', { fg: 'green', bold: true })}
+        <Text fg="green" bold>
+          LEVEL FINISHED, CONGRATS!
+        </Text>
       </text>
       <text top="55%" left="center">
-        {text.style('Press <space> to next level.', { fg: 'grey' })}
+        <Text fg="grey">{'Press <space> to next level.'}</Text>
       </text>
     </box>
   )

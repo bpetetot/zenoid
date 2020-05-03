@@ -1,14 +1,13 @@
 import React, { memo } from 'react'
 
-import * as text from '../helpers/text'
-import * as board from '../helpers/board'
-import * as modifier from '../helpers/modifier'
+import { getBricksRemaining } from '../zenoid/level/helpers'
+
+import Text from './Text'
 
 export const PANEL_WIDTH = 30
 
-const Panel = ({ top, left, width, height, game }) => {
-  const bricksRemainingCount = board.getBricksRemaining(game.board).length
-  const currentModifier = modifier.getModifier(game.modifier)
+const Panel = ({ top, left, width, height, zenoid }) => {
+  const bricksCount = getBricksRemaining(zenoid.level).length
 
   return (
     <box
@@ -20,23 +19,15 @@ const Panel = ({ top, left, width, height, game }) => {
       style={{ border: { fg: 'grey' } }}
     >
       <box top={1} left="center">
-        {text.style(` ZENOID v0.1`, { bold: true, fg: 'green' })}
+        <Text fg="green" bold>
+          {' ZENOID v0.1'}
+        </Text>
       </box>
-      <box top={4}>
-        {text.style(` Level: ${game.currentLevel}`)}
-      </box>
-      <box top={6}>
-        {text.style(` Lives: ${game.lives}`)}
-      </box>
-      <box top={8}>
-        {text.style(` Score: ${game.score}`)}
-      </box>
-      <box top={10}>
-        {text.style(` Bricks: ${bricksRemainingCount}`)}
-      </box>
-      <box top={12}>
-        {text.style(` Modifier: ${currentModifier ? currentModifier.label : '-'}`)}
-      </box>
+      <box top={4}>{` Level: ${zenoid.game.currentLevel}`}</box>
+      <box top={6}>{` Lives: ${zenoid.game.lives}`}</box>
+      <box top={8}>{` Score: ${zenoid.game.score}`}</box>
+      <box top={10}>{` Bricks: ${bricksCount}`}</box>
+      <box top={12}>{` Modifier: ${zenoid.modifier || '-'}`}</box>
     </box>
   )
 }

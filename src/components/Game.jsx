@@ -2,14 +2,13 @@ import React from 'react'
 import Brick from './Brick'
 import Player from './Player'
 import Ball from './Ball'
-import * as board from '../helpers/board'
+import { getBricks } from '../zenoid/level/helpers'
 import useKeys from '../hooks/useKeys'
 
-function Game({ game, onMoveLeft, onMoveRight, onStart }) {
+function Game({ zenoid, onMoveLeft, onMoveRight }) {
   const keysRef = useKeys({
     left: onMoveLeft,
     right: onMoveRight,
-    space: onStart,
   })
 
   return (
@@ -20,11 +19,11 @@ function Game({ game, onMoveLeft, onMoveRight, onStart }) {
       border={{ type: 'line' }}
       style={{ border: { fg: 'grey' } }}
     >
-      {board.getBricks(game.board).map((brick) => (
+      {getBricks(zenoid.level).map((brick) => (
         <Brick key={brick.id} {...brick} />
       ))}
-      <Player {...game.player} />
-      <Ball {...game.ball} />
+      <Player {...zenoid.player} />
+      <Ball {...zenoid.ball} />
     </box>
   )
 }

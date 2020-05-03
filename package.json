@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "build": "babel src -d dist",
-    "start": "yarn build && node dist/index.js",
+    "start": "yarn build && node --inspect dist/index.js",
     "test": "jest"
   },
   "devDependencies": {
@@ -20,6 +20,8 @@
     "ws": "^7.2.5"
   },
   "dependencies": {
+    "@rematch/core": "^1.4.0",
+    "@rematch/immer": "^1.2.0",
     "neo-blessed": "^0.2.0",
     "neo-blessed-contrib": "^4.8.10",
     "react": "^16.8.0",
