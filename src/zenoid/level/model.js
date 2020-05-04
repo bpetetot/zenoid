@@ -23,7 +23,7 @@ export default {
   effects: (dispatch) => ({
     update: (_payload, { game, level }) => {
       if (isFinished(level)) {
-        if (game.currentLevel < levels.length) {
+        if (game.currentLevel < levels.length - 1) {
           dispatch.game.setStatus(NEXT_LEVEL)
         } else {
           dispatch.game.setStatus(GAME_WON)

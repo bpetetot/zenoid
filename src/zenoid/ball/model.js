@@ -59,16 +59,14 @@ export default {
 
       const brick = helpers.findBrickCollision(ball, level)
       if (brick) {
-        if (collision.fromBottom(ball, brick)) {
-          dispatch.ball.moveBottom()
-        } else if (collision.fromTop(ball, brick)) {
-          dispatch.ball.moveTop()
-        }
-
         if (collision.fromLeft(ball, brick)) {
           dispatch.ball.moveLeft()
         } else if (collision.fromRight(ball, brick)) {
           dispatch.ball.moveRight()
+        } else if (collision.fromBottom(ball, brick)) {
+          dispatch.ball.moveBottom()
+        } else if (collision.fromTop(ball, brick)) {
+          dispatch.ball.moveTop()
         }
 
         if (isBreakable(brick)) {
