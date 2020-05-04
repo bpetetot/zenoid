@@ -1,5 +1,5 @@
 import * as direction from '../direction'
-import { READY, PLAYING } from '../game/constants'
+import { isReady, isPlaying } from '../game/helpers'
 import { PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_VELOCITY } from './constants'
 import { isMovingLeft, isMovingRight } from './helpers'
 
@@ -57,8 +57,8 @@ export default {
   effects: (dispatch) => ({
     moveLeft: (_payload, { game, player }) => {
       if (!isMovingLeft(player)) {
-        if (game.status === READY) {
-          dispatch.game.setStatus(PLAYING)
+        if (isReady(game)) {
+          dispatch.game.play()
           dispatch.ball.moveLeft()
         }
         dispatch.player.setDirectionLeft()
@@ -66,8 +66,8 @@ export default {
     },
     moveRight: (_payload, { game, player }) => {
       if (!isMovingRight(player)) {
-        if (game.status === READY) {
-          dispatch.game.setStatus(PLAYING)
+        if (isReady(game)) {
+          dispatch.game.play()
           dispatch.ball.moveRight()
         }
         dispatch.player.setDirectionRight()

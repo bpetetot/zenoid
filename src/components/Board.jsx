@@ -2,6 +2,8 @@ import React, { memo } from 'react'
 
 import useZenoid from '../hooks/useZenoid'
 
+import * as game from '../zenoid/game/helpers'
+
 import Panel, { PANEL_WIDTH } from './Panel'
 import Footer, { FOOTER_HEIGHT } from './Footer'
 import GameOver from './GameOver'
@@ -16,8 +18,7 @@ const Board = ({ goToSplashscreen }) => {
   
   const boardWidth = zenoid.level.cols + 2
   const boardHeight = zenoid.level.rows + 2
-  const { status } = zenoid.game
-  const displayGame = status === 'READY' ||  status === 'PLAYING'
+  const displayGame = game.isReady(zenoid.game) || game.isPlaying(zenoid.game)
 
   return (
     <box
@@ -27,11 +28,9 @@ const Board = ({ goToSplashscreen }) => {
       height={boardHeight + FOOTER_HEIGHT}
     >
       <box width={boardWidth} height={boardHeight}>
-        {status === 'GAME_OVER' && <GameOver onRestart={goToSplashscreen} />}
-        {status === 'GAME_WON' && <GameWon onRestart={goToSplashscreen} />}
-        {status === 'NEXT_LEVEL' && (
-          <NextLevel startNextLevel={onStartNextLevel} />
-        )}
+        {game.isGameOver(zenoid.game) && <GameOver onRestart={goToSplashscreen} />}
+        {game.isGameWon(zenoid.game) && <GameWon onRestart={goToSplashscreen} />}
+        {game.isNextLevel(zenoid.game) && <NextLevel startNextLevel={onStartNextLevel} />}
         {displayGame && <Game zenoid={zenoid} {...keyHandlers} />}
       </box>
       <Panel

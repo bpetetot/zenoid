@@ -1,5 +1,6 @@
 import levels from '../levels'
 
+import { setStatus, isPlaying } from './helpers'
 import { READY, PLAYING, GAME_OVER, GAME_SPEED } from './constants'
 
 export default {
@@ -15,6 +16,9 @@ export default {
       state.score = state.score + points
       return state
     },
+    ready: setStatus(READY),
+    play: setStatus(PLAYING),
+    gameOver: setStatus(GAME_OVER),
     die: (state) => {
       state.lives = state.lives - 1
       return state
@@ -26,6 +30,7 @@ export default {
     startNextLevel: (state) => {
       state.status = READY
       state.currentLevel = state.currentLevel + 1
+      return state
     },
     setSpeed: (state, speed) => {
       state.speed = speed
@@ -40,7 +45,7 @@ export default {
       dispatch.ball.init(level)
     },
     update: (_payload, { game, level }) => {
-      if (game.status !== PLAYING) return
+      if (!isPlaying(game)) return
 
       dispatch.ball.update()
 
@@ -51,9 +56,9 @@ export default {
     },
     die: (_payload, { game, player }) => {
       if (game.lives === 0) {
-        dispatch.game.setStatus(GAME_OVER)
+        dispatch.game.gameOver()
       } else {
-        dispatch.game.setStatus(READY)
+        dispatch.game.ready()
         dispatch.player.stop()
         dispatch.ball.moveToPlayer(player)
       }
