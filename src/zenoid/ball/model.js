@@ -45,14 +45,13 @@ export default {
 
       let { dx, dy } = ball
 
-      if (helpers.touchEdgeTop(ball, level)) {
-        dy = direction.BOTTOM
-      }
       if (helpers.touchEdgeLeft(ball, level)) {
         dx = direction.RIGHT
-      }
-      if (helpers.touchEdgeRight(ball, level)) {
+      } else if (helpers.touchEdgeRight(ball, level)) {
         dx = direction.LEFT
+      }
+      if (helpers.touchEdgeTop(ball, level)) {
+        dy = direction.BOTTOM
       }
       if (helpers.touchPlayer(ball, player)) {
         dy = direction.TOP
