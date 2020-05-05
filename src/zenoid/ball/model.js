@@ -1,6 +1,6 @@
 import * as direction from '../direction'
 import * as collision from '../collision'
-import { isBreakable } from '../level/helpers'
+import { isBreakable, getBricks } from '../level/helpers'
 
 import { BALL_WIDTH, BALL_HEIGHT } from './constants'
 import * as helpers from './helpers'
@@ -43,40 +43,47 @@ export default {
         dispatch.game.die()
       }
 
-      if (helpers.willBumpEdgeTop(ball, level)) {
-        dispatch.ball.moveBottom()
+      let { dx, dy } = ball
+
+      if (helpers.touchEdgeTop(ball, level)) {
+        dy = direction.BOTTOM
+      }
+      if (helpers.touchEdgeLeft(ball, level)) {
+        dx = direction.RIGHT
+      }
+      if (helpers.touchEdgeRight(ball, level)) {
+        dx = direction.LEFT
+      }
+      if (helpers.touchPlayer(ball, player)) {
+        dy = direction.TOP
       }
 
-      if (helpers.willBumpEdgeLeft(ball, level)) {
-        dispatch.ball.moveRight()
-      } else if (helpers.willBumpEdgeRight(ball, level)) {
-        dispatch.ball.moveLeft()
-      }
+      const brick = helpers.findNextTouchingBrick(ball, getBricks(level))
 
-      if (helpers.willBumpPlayer(ball, player)) {
-        dispatch.ball.moveTop()
-      }
-
-      const brick = helpers.findBrickCollision(ball, level)
       if (brick) {
-        if (collision.fromLeft(ball, brick)) {
-          dispatch.ball.moveLeft()
-        } else if (collision.fromRight(ball, brick)) {
-          dispatch.ball.moveRight()
-        } else if (collision.fromBottom(ball, brick)) {
-          dispatch.ball.moveBottom()
-        } else if (collision.fromTop(ball, brick)) {
-          dispatch.ball.moveTop()
+        if (dx === direction.RIGHT && collision.touchLeft(ball, brick)) {
+          dx = direction.LEFT
+        } else if (dx === direction.LEFT && collision.touchRight(ball, brick)) {
+          dx = direction.RIGHT
+        }
+
+        if (dy === direction.BOTTOM && collision.touchTop(ball, brick)) {
+          dy = direction.TOP
+        } else if (dy === direction.TOP && collision.touchBottom(ball, brick)) {
+          dy = direction.BOTTOM
         }
 
         if (isBreakable(brick)) {
           dispatch.level.killBrick(brick.id)
-
           dispatch.modifier.apply(brick.modifier)
-
           dispatch.game.incrementScore(brick.points)
         }
       }
+
+      if (dx === direction.RIGHT) dispatch.ball.moveRight()
+      if (dx === direction.LEFT) dispatch.ball.moveLeft()
+      if (dy === direction.BOTTOM) dispatch.ball.moveBottom()
+      if (dy === direction.TOP) dispatch.ball.moveTop()
     },
   }),
 }
