@@ -5,10 +5,11 @@ import Ball from './Ball'
 import { getBricks } from '../zenoid/level/helpers'
 import useKeys from '../hooks/useKeys'
 
-function Game({ zenoid, onMoveLeft, onMoveRight }) {
+function Game({ zenoid, onMoveLeft, onMoveRight, onDash }) {
   const keysRef = useKeys({
     left: onMoveLeft,
     right: onMoveRight,
+    space: onDash,
   })
 
   return (

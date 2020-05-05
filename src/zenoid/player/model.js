@@ -1,6 +1,6 @@
 import * as direction from '../direction'
-import { isReady, isPlaying } from '../game/helpers'
-import { PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_VELOCITY } from './constants'
+import { isReady } from '../game/helpers'
+import { PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_VELOCITY, PLAYER_VELOCITY_DASH } from './constants'
 import { isMovingLeft, isMovingRight } from './helpers'
 
 export default {
@@ -23,7 +23,7 @@ export default {
     },
     move: (state, level) => {
       let shouldMove = false
-      let currentDx = state.dx * PLAYER_VELOCITY
+      let currentDx = state.dx * state.velocity
       while (!shouldMove && Math.abs(currentDx) !== 0) {
         const nextX = state.x + currentDx
         if (currentDx <= 0) {
@@ -44,11 +44,16 @@ export default {
       if (shouldMove) {
         state.x = state.x + currentDx
       }
+      state.velocity = PLAYER_VELOCITY
       return state
     },
     setDirectionLeft: (state) => direction.setLeft(state),
     setDirectionRight: (state) => direction.setRight(state),
     stop: (state) => direction.setStopX(state),
+    setVelocity: (state, velocity) => {
+      state.velocity = velocity
+      return state
+    },
     setWidth: (state, width) => {
       state.width = width
       return state
@@ -71,6 +76,11 @@ export default {
           dispatch.ball.moveRight()
         }
         dispatch.player.setDirectionRight()
+      }
+    },
+    dash: (_payload, { player }) => {
+      if (isMovingRight(player) || isMovingLeft(player)) {
+        dispatch.player.setVelocity(PLAYER_VELOCITY_DASH)
       }
     },
   }),

@@ -26,6 +26,7 @@ export const useGame = () => {
     zenoid: zenoid,
     onMoveLeft: ref.current && ref.current.dispatch.player.moveLeft,
     onMoveRight: ref.current && ref.current.dispatch.player.moveRight,
+    onDash: ref.current && ref.current.dispatch.player.dash,
     onStartNextLevel: ref.current && ref.current.dispatch.game.startNextLevel,
   }
 }
