@@ -1,8 +1,12 @@
 import { BREAKABLE, BUMP } from './constants'
 
-const getColor = (type) => {
+import { getModifier } from '../modifier/model'
+
+const getColor = ({ type, modifier }) => {
   if (type === BUMP) return 'grey'
-  return 'yellow'
+
+  const modifierColor = getModifier(modifier).color
+  return modifierColor || 'yellow'
 }
 
 export const initBrick = (brick, id) => ({
@@ -12,7 +16,7 @@ export const initBrick = (brick, id) => ({
   dead: false,
   type: brick.type || BREAKABLE,
   modifier: brick.modifier,
-  color: brick.color || getColor(brick.type),
+  color: brick.color || getColor(brick),
 })
 
 const isType = (type) => (brick) => brick.type === type

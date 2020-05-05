@@ -23,6 +23,10 @@ export default {
       state.lives = state.lives - 1
       return state
     },
+    addLife: (state) => {
+      state.lives = state.lives + 1
+      return state
+    },
     setStatus: (state, status) => {
       state.status = status
       return state
@@ -43,6 +47,7 @@ export default {
       dispatch.level.init(level)
       dispatch.player.init(level)
       dispatch.ball.init(level)
+      dispatch.modifier.init()
     },
     update: (_payload, { game, level }) => {
       if (!isPlaying(game)) return

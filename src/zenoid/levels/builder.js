@@ -1,5 +1,5 @@
 import { BREAKABLE, BUMP } from '../level/constants'
-import { SHORT_BAR, LONG_BAR, SLOW_GAME, FAST_GAME } from '../modifier/constants'
+import { SHORT_BAR, LONG_BAR, SLOW_GAME, FAST_GAME, LIFE } from '../modifier/constants'
 
 const mappingType = {
   B: BREAKABLE,
@@ -11,6 +11,7 @@ const mappingModifier = {
   W: LONG_BAR,
   E: SLOW_GAME,
   R: FAST_GAME,
+  T: LIFE,
 }
 
 const trim = (str) => str.replace(/^\s+|\s+$/g, '');
