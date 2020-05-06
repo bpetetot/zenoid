@@ -54,7 +54,7 @@ export const build = (levelDesc) => {
     if (!colsCount) {
       colsCount = rowCols.length
     } else if (colsCount !== rowCols.length) {
-      console.log(
+      console.warn(
         `Row ${rowIndex + 1}: Columns count (${rowCols.length}) different from the first row (${colsCount})`
       )
     }

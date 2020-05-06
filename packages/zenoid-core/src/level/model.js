@@ -1,4 +1,3 @@
-import levels from '../levels'
 import { NEXT_LEVEL, GAME_WON } from '../game/constants'
 import { initBrick, isFinished } from './helpers'
 
@@ -23,7 +22,7 @@ export default {
   effects: (dispatch) => ({
     update: (_payload, { game, level }) => {
       if (isFinished(level)) {
-        if (game.currentLevel < levels.length - 1) {
+        if (game.currentLevel < game.lastLevel) {
           dispatch.game.setStatus(NEXT_LEVEL)
         } else {
           dispatch.game.setStatus(GAME_WON)

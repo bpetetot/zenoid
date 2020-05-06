@@ -7,7 +7,9 @@ import player from './player/model'
 import ball from './ball/model'
 import modifier from './modifier/model'
 
-export const initZenoid = () => {
+import levels from './levels'
+
+export const initZenoid = (customLevels) => {
   const store = rematch.init({
     models: {
       game,
@@ -19,7 +21,7 @@ export const initZenoid = () => {
     plugins: [immerPlugin()],
   })
 
-  store.dispatch.game.init()
+  store.dispatch.game.init(customLevels || levels)
 
   return store
 }

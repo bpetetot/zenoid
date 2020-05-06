@@ -1,5 +1,3 @@
-import levels from '../levels'
-
 import { setStatus, isPlaying } from './helpers'
 import { READY, PLAYING, GAME_OVER, GAME_SPEED } from './constants'
 
@@ -12,6 +10,13 @@ export default {
     speed: GAME_SPEED,
   },
   reducers: {
+    init: (state, levels) => {
+      if (levels)  {
+        state.lastLevel = levels.length - 1
+        state.levels = levels
+      }
+      return state
+    },
     incrementScore: (state, points = 1) => {
       state.score = state.score + points
       return state
@@ -43,7 +48,7 @@ export default {
   },
   effects: (dispatch) => ({
     init: (_payload, { game }) => {
-      const level = levels[game.currentLevel]
+      const level = game.levels[game.currentLevel]
       dispatch.level.init(level)
       dispatch.player.init(level)
       dispatch.ball.init(level)
