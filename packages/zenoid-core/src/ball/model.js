@@ -57,9 +57,9 @@ export default {
         dy = direction.TOP
       }
 
-      const brick = helpers.findNextTouchingBrick(ball, getBricks(level))
+      const bricks = helpers.getAllNextTouchingBrick(ball, getBricks(level))
 
-      if (brick) {
+      bricks.forEach(brick => {
         if (dx === direction.RIGHT && collision.touchLeft(ball, brick)) {
           dx = direction.LEFT
         } else if (dx === direction.LEFT && collision.touchRight(ball, brick)) {
@@ -77,7 +77,7 @@ export default {
           dispatch.modifier.apply(brick.modifier)
           dispatch.game.incrementScore(brick.points)
         }
-      }
+      })
 
       if (dx === direction.RIGHT) dispatch.ball.moveRight()
       if (dx === direction.LEFT) dispatch.ball.moveLeft()

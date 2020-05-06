@@ -13,8 +13,8 @@ export const touchPlayer = (ball, player) => {
   return touchBall(player) && touchTop(ball, player)
 }
 
-export const findNextTouchingBrick = (ball, bricks) => {
+export const getAllNextTouchingBrick = (ball, bricks) => {
   const touchBall = touchBox(ball)
-  return bricks.find(touchBall)
+  return bricks.filter(touchBall)
 }
 
