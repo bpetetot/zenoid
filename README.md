@@ -3,5 +3,5 @@
 ## Usage
 
 ```bash
-yarn && yarn start
+yarn && yarn start:cli
 ```

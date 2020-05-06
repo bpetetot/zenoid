@@ -1,31 +1,10 @@
 {
   "name": "zenoid",
   "version": "0.1.0",
-  "scripts": {
-    "build": "babel src -d dist",
-    "start": "yarn build && node dist/index.js",
-    "test": "jest"
-  },
   "license": "Apache-2.0",
-  "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
-    "@babel/plugin-proposal-class-properties": "^7.7.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
-    "@babel/preset-react": "^7.0.0",
-    "@babel/register": "^7.0.0",
-    "babel-jest": "^25.5.1",
-    "jest": "^25.5.2",
-    "react-devtools-core": "^4.6.0",
-    "ws": "^7.2.5"
-  },
-  "dependencies": {
-    "@rematch/core": "^1.4.0",
-    "@rematch/immer": "^1.2.0",
-    "neo-blessed": "^0.2.0",
-    "neo-blessed-contrib": "^4.8.10",
-    "react": "^16.8.0",
-    "react-blessed": "^0.6.2"
+  "workspaces": ["packages/*"],
+  "private": true,
+  "scripts": {
+    "start:cli": "yarn workspace @zenoid/cli start"
   }
 }

@@ -1,0 +1,24 @@
+{
+  "name": "@zenoid/core",
+  "version": "1.0.0",
+  "description": "Zenoid engine",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "babel src -d dist",
+    "postinstall": "yarn build"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-export-namespace-from": "^7.8.3",
+    "@babel/preset-env": "^7.0.0",
+    "babel-jest": "^25.5.1",
+    "jest": "^25.5.2"
+  },
+  "dependencies": {
+    "@rematch/core": "^1.4.0",
+    "@rematch/immer": "^1.2.0"
+  }
+}

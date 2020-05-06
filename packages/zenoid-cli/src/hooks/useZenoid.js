@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import useInterval from './useInterval'
 
-import { initZenoid } from '../zenoid/store'
+import Zenoid from '@zenoid/core'
 
 export const useGame = () => {
   const ref = useRef()
   const [zenoid, setZenoid] = useState()
 
   const initialize = () => {
-    ref.current = initZenoid()
+    ref.current = Zenoid()
     setZenoid(ref.current.getState())
   }
 

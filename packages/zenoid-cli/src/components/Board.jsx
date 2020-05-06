@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 
 import useZenoid from '../hooks/useZenoid'
 
-import * as game from '../zenoid/game/helpers'
+import { game }  from '@zenoid/core'
 
 import Panel, { PANEL_WIDTH } from './Panel'
 import Footer, { FOOTER_HEIGHT } from './Footer'

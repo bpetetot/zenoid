@@ -1,0 +1,24 @@
+{
+  "name": "@zenoid/cli",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "Apache-2.0",
+  "private": true,
+  "scripts": {
+    "build": "babel src -d dist",
+    "start": "yarn build && node dist/index.js"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0"
+  },
+  "dependencies": {
+    "@zenoid/core": "^1.0.0",
+    "neo-blessed": "^0.2.0",
+    "neo-blessed-contrib": "^4.8.10",
+    "react": "^16.8.0",
+    "react-blessed": "^0.6.2"
+  }
+}

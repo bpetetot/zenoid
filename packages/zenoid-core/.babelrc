@@ -1,0 +1,14 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": true,
+          "esmodules": true
+        }
+      }
+    ]
+  ],
+  "plugins": ["@babel/plugin-proposal-export-namespace-from"]
+}
