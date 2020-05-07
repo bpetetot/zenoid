@@ -7,8 +7,7 @@
   "private": true,
   "scripts": {
     "build": "babel src -d dist",
-    "test": "jest",
-    "postinstall": "yarn build"
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",

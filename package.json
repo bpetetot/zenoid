@@ -5,6 +5,9 @@
   "workspaces": ["packages/*"],
   "private": true,
   "scripts": {
+    "build:core": "yarn workspace @zenoid/core build",
+    "prebuild:cli": "yarn build:core",
+    "build:cli": "yarn workspace @zenoid/cli build",
     "start:cli": "yarn workspace @zenoid/cli start"
   }
 }
