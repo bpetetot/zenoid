@@ -19,8 +19,10 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/packages/zenoid-core /usr/src/zenoid-core
 COPY --from=builder /usr/src/app/packages/zenoid-cli/package.json /usr/src/app/yarn.lock ./
 
-RUN yarn install --production
+RUN yarn install --production --pure-lockfile
 
 COPY --from=builder /usr/src/app/packages/zenoid-cli/dist/ dist/
+
+USER node
 
 CMD ["node", "dist/index.js"]
