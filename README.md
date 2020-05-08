@@ -1,6 +1,6 @@
-# Zenoid
+# Zenoid 👾
 
-## Usage
+## Usage ⚙️
 
 ```bash
 yarn && \
@@ -13,14 +13,14 @@ docker image build -t zenoid .
 docker container run --rm -it zenoid
 ```
 
-## How to play
+## How to play 🕹
 
 Press left arrow to go left and right arrow to go right.  
 **No need to keep pressing arrows (it could make the game slow).**
 
 Wanna go faster? Press space key to dash.
 
-## Make your own levels
+## Make your own levels 🧱
 
 `@zenoid/core` exposes `levelBuilder` so you can make your own level.  
 It takes a *level* as parameter which is a `string` representing the level (i.e. `levels` folder in `@zenoid/core`).
