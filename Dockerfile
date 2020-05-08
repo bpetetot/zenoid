@@ -16,7 +16,10 @@ FROM node:14.1.0-alpine
 
 WORKDIR /usr/src/app
 
-COPY --from=builder /usr/src/app/packages/zenoid-core /usr/src/zenoid-core
+COPY --from=builder /usr/src/app/packages/zenoid-core/package.json \
+                    /usr/src/app/packages/zenoid-core/dist/ \
+                    /usr/src/zenoid-core/
+
 COPY --from=builder /usr/src/app/packages/zenoid-cli/package.json /usr/src/app/yarn.lock ./
 
 RUN yarn add @zenoid/core@file:./../zenoid-core && \
