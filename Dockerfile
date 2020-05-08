@@ -19,7 +19,8 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/packages/zenoid-core /usr/src/zenoid-core
 COPY --from=builder /usr/src/app/packages/zenoid-cli/package.json /usr/src/app/yarn.lock ./
 
-RUN yarn install --production --pure-lockfile
+RUN yarn add @zenoid/core@file:./../zenoid-core && \
+    yarn install --production
 
 COPY --from=builder /usr/src/app/packages/zenoid-cli/dist/ dist/
 
