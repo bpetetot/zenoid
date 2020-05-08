@@ -2,11 +2,19 @@
 
 ## Usage ⚙️
 
+### Right on your machine 💻
+
+You'll need [node](https://nodejs.org) and [yarn](https://yarnpkg.com) to be installed.
+
 ```bash
-yarn && \
-yarn build:cli && \
+yarn install
+yarn build:cli
 yarn start:cli
 ```
+
+### In a container using Docker 🐳
+
+You'll need [docker](https://www.docker.com/) to be installed.
 
 ```bash
 docker image build -t zenoid .
