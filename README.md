@@ -1,5 +1,7 @@
 # Zenoid 👾
 
+🚧 **Web version is under development**
+
 ## Usage ⚙️
 
 ### Right on your machine 💻
